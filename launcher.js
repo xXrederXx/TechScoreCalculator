@@ -1,5 +1,5 @@
 // Use "pkg launcher.js -t node*-win-x64 -o ./out/expo-launcher.exe" To create .exe
-
+// also add new package.json next to the output file
 const { spawn } = require("child_process");
 
 const expoProcess = spawn("npx", ["expo", "start", "--web"], {
