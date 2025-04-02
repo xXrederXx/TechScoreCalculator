@@ -1,9 +1,11 @@
+import PartDisplay from '@/components/PartCheckerOnly/PartDisplay';
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 const PartCheckerScreen: React.FC = () => {
   return (
     <View style={styles.container}>
+      <PartDisplay/>
       <Text style={styles.text}>Part Checker Screen</Text>
     </View>
   );
