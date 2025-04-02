@@ -1,19 +1,19 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../App';
+import { Href, router } from 'expo-router';
 
 const NavigationSection = () => {
-  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-
+  function GoTo(name:Href)
+  {
+    router.push(name);
+  }
   return (
     <View style={styles.navContainer}>
       {['PcChecker', 'PartChecker', 'PcScore'].map((screen) => (
         <TouchableOpacity
           key={screen}
           style={styles.button}
-          onPress={() => navigation.navigate(screen as keyof RootStackParamList)}
+          onPress={() => GoTo((screen + "Screen") as Href)}
         >
           <Text style={styles.buttonText}>{screen}</Text>
         </TouchableOpacity>

@@ -1,15 +1,23 @@
-import { Text, View } from "react-native";
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
+import Hero from '../components/IndexOnly/Hero';
+import NavigationSection from '../components/IndexOnly/NavigationSection';
 
-export default function Index() {
+const HomeScreen = () => {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
+    <View style={styles.container}>
+      <Hero />
+      <NavigationSection />
     </View>
   );
-}
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#121212',
+    padding: 20,
+  },
+});
+
+export default HomeScreen;
