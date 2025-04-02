@@ -1,17 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
-import GeizhalsInput from '../GeizhalsInput';
+import GeizhalsInput from '@/components/GeizhalsInput';
+import { scrapeSpecs } from '@/Lib/scraper';
 
 const PartDisplay = () => {
-    function getData() {
-        // This will fetch data as JSON key-value pairs
-        console.log("Fetching data...");
+    const [url, seturl] = useState("")
+    const [scrapedData, setScrapedData] = useState({})
+
+    async function getData() {
+        const response = await scrapeSpecs(url)
+        setScrapedData(response)
+        console.log(response);
+        
     }
 
     return (
         <View style={styles.mainContainer}>
             <Text style={styles.title}>Geizhals Product Lookup</Text>
-            <GeizhalsInput />
+            <GeizhalsInput onUrlChange={(val) => seturl(val)}/>
             <Button title="Fetch Data" onPress={getData} color="#007BFF" />
         </View>
     );
@@ -23,10 +29,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#f8f9fa',
         borderRadius: 10,
         alignItems: 'center',
-        shadowColor: '#000',
-        shadowOpacity: 0.1,
-        shadowOffset: { width: 0, height: 2 },
-        shadowRadius: 4,
         elevation: 3,
     },
     title: {

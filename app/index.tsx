@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import Hero from '../components/IndexOnly/Hero';
-import NavigationSection from '../components/IndexOnly/NavigationSection';
+import Hero from '@/components/IndexOnly/Hero';
+import NavigationSection from '@/components/IndexOnly/NavigationSection';
 
 const HomeScreen = () => {
   return (

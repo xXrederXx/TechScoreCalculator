@@ -43,10 +43,6 @@ const styles = StyleSheet.create({
         padding: 16,
         backgroundColor: '#f8f9fa',
         borderRadius: 8,
-        shadowColor: '#000',
-        shadowOpacity: 0.1,
-        shadowOffset: { width: 0, height: 2 },
-        shadowRadius: 4,
         elevation: 3,
     },
     label: {
