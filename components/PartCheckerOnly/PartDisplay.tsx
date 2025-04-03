@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 import GeizhalsInput from '@/components/GeizhalsInput';
-import { scrapeSpecs } from '@/Lib/scraper';
+import { fetchDataGeizhals } from '@/Lib/DataFetcher';
+import KeyValueDisplay from '../KeyValueDisplay';
+import { ConvertToCPU } from '@/Lib/Converters/GHToCPU';
 
 const PartDisplay = () => {
     const [url, seturl] = useState("")
     const [scrapedData, setScrapedData] = useState({})
 
     async function getData() {
-        const response = await scrapeSpecs(url)
+        const response = await fetchDataGeizhals(url)
         setScrapedData(response)
         console.log(response);
-        
     }
 
     return (
@@ -19,6 +20,7 @@ const PartDisplay = () => {
             <Text style={styles.title}>Geizhals Product Lookup</Text>
             <GeizhalsInput onUrlChange={(val) => seturl(val)}/>
             <Button title="Fetch Data" onPress={getData} color="#007BFF" />
+            <KeyValueDisplay data={ConvertToCPU(scrapedData)}/>
         </View>
     );
 };
