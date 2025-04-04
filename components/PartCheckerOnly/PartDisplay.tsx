@@ -45,6 +45,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         alignItems: 'center',
         elevation: 3,
+        minWidth: 330,
+        maxWidth: 660
     },
     title: {
         fontSize: 18,

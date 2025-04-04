@@ -9,9 +9,6 @@ const PartCheckerScreen: React.FC = () => {
     <View style={styles.container}>
       <PartDisplay PartName={"CPU"} convertFunc={(d) => ConvertToCPU(d)}/>
       <PartDisplay PartName={"SSD"} convertFunc={(d) => ConvertToSSD(d)}/>
-      <PartDisplay/>
-      <PartDisplay/>
-      <Text style={styles.text}>Part Checker Screen</Text>
     </View>
   );
 };

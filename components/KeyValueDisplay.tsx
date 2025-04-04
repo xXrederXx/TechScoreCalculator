@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.1,
         shadowOffset: { width: 0, height: 1 },
         elevation: 2,
+        gap: 12
     },
     keyText: {
         fontWeight: 'bold',
