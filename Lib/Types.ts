@@ -12,3 +12,11 @@ export interface CPUSpecs{
     Socket: string,
     DDRVersions: number[],
 }
+
+export interface SSDSpecs{
+    Capacity: number,
+    ReadSpeed: number,
+    WriteSpeed: number,
+    IOPS4KRead: number,
+    IOPS4KWrite: number,
+}
