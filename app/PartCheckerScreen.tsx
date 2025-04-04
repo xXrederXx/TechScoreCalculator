@@ -6,6 +6,9 @@ const PartCheckerScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <PartDisplay/>
+      <PartDisplay/>
+      <PartDisplay/>
+      <PartDisplay/>
       <Text style={styles.text}>Part Checker Screen</Text>
     </View>
   );
@@ -13,6 +16,9 @@ const PartCheckerScreen: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
+    display: "flex",
+    flexDirection: "row",
+    gap: 2,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',

@@ -10,5 +10,5 @@ export interface CPUSpecs{
     L2Cache: number,
     L3Cache: number,
     Socket: string,
-    DDRVersion: number,
+    DDRVersions: number[],
 }

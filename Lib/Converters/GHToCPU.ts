@@ -1,8 +1,7 @@
 import { CPUSpecs } from "../Types";
-import { isChar, isNumber } from "../Util/Is";
 import { TryConvert } from "../Util/TryConvert";
 
-export function ConvertToCPU(data: any) : CPUSpecs {
+export function ConvertToCPU(data: any): CPUSpecs {
     let ret = {
         Cores: TryConvert<number>((d) => parseInt(d.Kerne), data, 0),
         Threads: TryConvert<number>((d) => parseInt(d.Threads), data, 0),
@@ -15,33 +14,36 @@ export function ConvertToCPU(data: any) : CPUSpecs {
         L2Cache: TryConvert<number>((d) => parseFloat(d["L2-Cache"].replace('MiB', '')), data, 0),
         L3Cache: TryConvert<number>((d) => parseFloat(d["L3-Cache"].replace('MiB', '')), data, 0),
         Socket: TryConvert<string>((d) => d.Sockel, data, "-"),
-        DDRVersion: TryConvert<number>((d) => parseInt(d.Speicherkompatibilität.match(/DDR(\d+)/)?.[1] || '4'), data, 0),
+        DDRVersions: TryConvert<number[]>((d) => parseDDRVersion(d.Speicherkompatibilität), data, [0]),
     };
     return ret;
 }
 
+function parseDDRVersion(data: string) {
+    const arr: number[] = [];
+    const regex: RegExp = /DDR(\d)/g;
+    let match;
 
-function parseChipset(data:string) {
-    let arr : string[] = []
-    for (let i = 0; i < data.length; i++) {
-        const element = data[i];
-        if(isChar(element))
-        {
-            let name = element
-            for (let j = 1; j < 4; j++) {
-                const letter = data[i + j];
-                if(isNumber(letter))
-                {
-                    name += letter;
-                }
-                if(j === 3 && name.length === 4) {
-                    arr.push(name)
-                }
-            }
+    while ((match = regex.exec(data)) !== null) {
+        const ver = parseInt(match[1]);
+        if (!arr.includes(ver)) {
+            arr.push(ver);
         }
     }
     return arr;
 }
 
 
-  
+function parseChipset(data: string) {
+    const arr: string[] = [];
+    const regex: RegExp = /[A-Za-z][0-9]+[A-Z]?/g;
+    let match;
+
+    while ((match = regex.exec(data)) !== null) {
+        const ver = match[0];
+        if (!arr.includes(ver)) {
+            arr.push(ver);
+        }
+    }
+    return arr;
+}
