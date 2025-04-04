@@ -1,3 +1,4 @@
+import theme from '@/Lib/theme';
 import { useState } from 'react';
 import { Text, View, StyleSheet, TextInput, Alert } from 'react-native';
 
@@ -41,7 +42,7 @@ export default GeizhalsInput;
 const styles = StyleSheet.create({
     container: {
         padding: 16,
-        backgroundColor: '#f8f9fa',
+        backgroundColor: theme.colors.background.verylight,
         borderRadius: 8,
         elevation: 3,
     },
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
         marginBottom: 8,
-        color: '#333',
+        color: theme.colors.text.verylight,
     },
     input: {
         height: 40,

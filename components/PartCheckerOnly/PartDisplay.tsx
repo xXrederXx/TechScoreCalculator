@@ -4,6 +4,7 @@ import GeizhalsInput from '@/components/GeizhalsInput';
 import { fetchDataGeizhals } from '@/Lib/DataFetcher';
 import KeyValueDisplay from '../KeyValueDisplay';
 import { NamedValue } from '@/Lib/Types';
+import theme from '@/Lib/theme';
 
 interface PartDisplayProps {
     PartName?: string,
@@ -41,7 +42,7 @@ const PartDisplay = (props: PartDisplayProps) => {
 const styles = StyleSheet.create({
     mainContainer: {
         padding: 20,
-        backgroundColor: '#f8f9fa',
+        backgroundColor: theme.colors.background.light,
         borderRadius: 10,
         alignItems: 'center',
         elevation: 3,
@@ -52,7 +53,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         marginBottom: 12,
-        color: '#333',
+        color: theme.colors.text.verylight,
     }
 });
 
