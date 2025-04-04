@@ -3,27 +3,40 @@ import { View, Text, StyleSheet, Button } from 'react-native';
 import GeizhalsInput from '@/components/GeizhalsInput';
 import { fetchDataGeizhals } from '@/Lib/DataFetcher';
 import KeyValueDisplay from '../KeyValueDisplay';
-import { ConvertToCPU } from '@/Lib/Converters/GHToCPU';
+import { NamedValue } from '@/Lib/Types';
 
-const PartDisplay = () => {
+interface PartDisplayProps {
+    PartName?: string,
+    convertFunc?: (data: any) => any,
+}
+
+const PartDisplay = (props: PartDisplayProps) => {
     const [url, seturl] = useState("")
-    const [scrapedData, setScrapedData] = useState({})
+    const [scrapedData, setScrapedData] = useState<{value : NamedValue<any>}>({value: new NamedValue(0, "")})
 
     async function getData() {
-        const response = await fetchDataGeizhals(url)
+        let response = await fetchDataGeizhals(url)
+        try {
+            if (props.convertFunc) {
+                response = props.convertFunc(response); 
+                console.log(response);
+            }
+        } catch (err) {
+            console.log("Convertion func not working. Error: " + err);
+        }
         setScrapedData(response)
-        console.log(response);
     }
 
     return (
         <View style={styles.mainContainer}>
-            <Text style={styles.title}>Geizhals Product Lookup</Text>
-            <GeizhalsInput onUrlChange={(val) => seturl(val)}/>
+            <Text style={styles.title}>Geizhals {props.PartName} Lookup</Text>
+            <GeizhalsInput onUrlChange={(val) => seturl(val)} />
             <Button title="Fetch Data" onPress={getData} color="#007BFF" />
-            <KeyValueDisplay data={ConvertToCPU(scrapedData)}/>
+            <KeyValueDisplay data={scrapedData} />
         </View>
     );
 };
+
 
 const styles = StyleSheet.create({
     mainContainer: {

@@ -1,22 +1,33 @@
 export interface CPUSpecs{
-    Cores : number,
-    Threads: number,
-    BoostClock: number,
-    BaseClock: number,
-    TDP: number,
-    Architecture: string,
-    Chipsets: string[],
-    HasIntegratedGraphic: boolean,
-    L2Cache: number,
-    L3Cache: number,
-    Socket: string,
-    DDRVersions: number[],
+    Cores : NamedValue<number>,
+    Threads: NamedValue<number>,
+    BoostClock: NamedValue<number>,
+    BaseClock: NamedValue<number>,
+    TDP: NamedValue<number>,
+    Architecture: NamedValue<string>,
+    Chipsets: NamedValue<string[]>,
+    HasIntegratedGraphic: NamedValue<boolean>,
+    L2Cache: NamedValue<number>,
+    L3Cache: NamedValue<number>,
+    Socket: NamedValue<string>,
+    DDRVersions: NamedValue<number[]>,
 }
 
 export interface SSDSpecs{
-    Capacity: number,
-    ReadSpeed: number,
-    WriteSpeed: number,
-    IOPS4KRead: number,
-    IOPS4KWrite: number,
+    Capacity: NamedValue<number>,
+    ReadSpeed: NamedValue<number>,
+    WriteSpeed: NamedValue<number>,
+    IOPS4KRead: NamedValue<number>,
+    IOPS4KWrite: NamedValue<number>,
+}
+
+export class NamedValue<T>
+{
+    value: T;
+    UserVersion: string;
+
+    constructor(value:T, UserVersion:string) {
+        this.value = value;
+        this.UserVersion = UserVersion;
+    }
 }

@@ -1,8 +1,9 @@
+import { NamedValue } from '@/Lib/Types';
 import * as React from 'react';
 import { Text, View, StyleSheet, ScrollView } from 'react-native';
 
 interface KeyValueDisplayProps {
-    data: any
+    data: { value: NamedValue<any> }
 }
 
 const KeyValueDisplay = (props: KeyValueDisplayProps) => {
@@ -12,7 +13,7 @@ const KeyValueDisplay = (props: KeyValueDisplayProps) => {
                 {Object.entries(props.data).map(([key, value], index) => (
                     <View key={index} style={styles.dataItem}>
                         <Text style={styles.keyText}>{key}:</Text>
-                        <Text style={styles.valueText}>{String(value)}</Text>
+                        <Text style={styles.valueText}>{value.UserVersion}</Text>
                     </View>
                 ))}
             </ScrollView>

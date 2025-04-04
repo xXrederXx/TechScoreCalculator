@@ -1,18 +1,18 @@
-import { SSDSpecs } from "../Types";
+import { NamedValue, SSDSpecs } from "../Types";
 import { TryConvert } from "../Util/TryConvert";
 
-export function ConvertToCPU(data: any): SSDSpecs {
+export function ConvertToSSD(data: any): SSDSpecs {
     let ret = {
-        Capacity: TryConvert<number>((d) => parseInt(d.Kapazität), data, 0),
-        ReadSpeed: TryConvert<number>((d) => parseInt(d.Lesen), data, 0),
-        WriteSpeed: TryConvert<number>((d) => parseInt(d.Schreiben), data, 0),
-        IOPS4KRead: TryConvert<number>((d) => parseIOPSRead(d.Kerne), data, 0),
-        IOPS4KWrite: TryConvert<number>((d) => parseIOPSWrite(d.Kerne), data, 0),
+        Capacity: TryConvert<NamedValue<number>>((d) => new NamedValue<number>(parseInt(d.Kapazität), d.Kapazität), data, new NamedValue<number>(0, "-")),
+        ReadSpeed: TryConvert<NamedValue<number>>((d) => new NamedValue<number>(parseInt(d.Lesen), d.Lesen), data, new NamedValue<number>(0, "-")),
+        WriteSpeed: TryConvert<NamedValue<number>>((d) => new NamedValue<number>(parseInt(d.Schreiben), d.Schreiben), data, new NamedValue<number>(0, "-")),
+        IOPS4KRead: TryConvert<NamedValue<number>>((d) => new NamedValue<number>(parseIOPSRead(d["IOPS 4K"]), d["IOPS 4K"]), data, new NamedValue<number>(0, "-")),
+        IOPS4KWrite: TryConvert<NamedValue<number>>((d) => new NamedValue<number>(parseIOPSWrite(d["IOPS 4K"]), d["IOPS 4K"]), data, new NamedValue<number>(0, "-")),
     };
     return ret;
 }
 
-function parseIOPSRead(data: string):number {
+function parseIOPSRead(data: string): number {
     const regex: RegExp = /(\d+)k lesend/g;
     let match;
 
@@ -23,7 +23,7 @@ function parseIOPSRead(data: string):number {
 }
 
 
-function parseIOPSWrite(data: string):number {
+function parseIOPSWrite(data: string): number {
     const regex: RegExp = /(\d+)k schreibend/g;
     let match;
 

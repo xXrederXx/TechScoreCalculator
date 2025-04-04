@@ -1,20 +1,21 @@
-import { CPUSpecs } from "../Types";
+import { CPUSpecs, NamedValue } from "../Types";
 import { TryConvert } from "../Util/TryConvert";
 
 export function ConvertToCPU(data: any): CPUSpecs {
     let ret = {
-        Cores: TryConvert<number>((d) => parseInt(d.Kerne), data, 0),
-        Threads: TryConvert<number>((d) => parseInt(d.Threads), data, 0),
-        BoostClock: TryConvert<number>((d) => parseFloat(d.Turbotakt.replace('GHz', '')), data, 0),
-        BaseClock: TryConvert<number>((d) => parseFloat(d.Basistakt.replace('GHz', '')), data, 0),
-        TDP: TryConvert<number>((d) => parseInt(d.TDP.replace('W', '')), data, 0),
-        Architecture: TryConvert<string>((d) => d.Architektur, data, "-"),
-        Chipsets: TryConvert<string[]>((d) => parseChipset(d["Chipsatz-Eignung"]), data, ["-"]),
-        HasIntegratedGraphic: TryConvert<boolean>((d) => d.Grafik.toLowerCase() !== "nein", data, false),
-        L2Cache: TryConvert<number>((d) => parseFloat(d["L2-Cache"].replace('MiB', '')), data, 0),
-        L3Cache: TryConvert<number>((d) => parseFloat(d["L3-Cache"].replace('MiB', '')), data, 0),
-        Socket: TryConvert<string>((d) => d.Sockel, data, "-"),
-        DDRVersions: TryConvert<number[]>((d) => parseDDRVersion(d.Speicherkompatibilität), data, [0]),
+        Cores: TryConvert<NamedValue<number>>((d) => new NamedValue<number>(parseInt(d.Kerne), d.Kerne), data, new NamedValue<number>(0, "-")),
+        Threads: TryConvert<NamedValue<number>>((d) => new NamedValue<number>(parseInt(d.Threads), d.Threads), data, new NamedValue<number>(0, "-")),
+        BoostClock: TryConvert<NamedValue<number>>((d) => new NamedValue<number>(parseFloat(d.Turbotakt.replace('GHz', '')), d.Turbotakt), data, new NamedValue<number>(0, "-")),
+        BaseClock: TryConvert<NamedValue<number>>((d) => new NamedValue<number>(parseFloat(d.Basistakt.replace('GHz', '')), d.Basistakt), data, new NamedValue<number>(0, "-")),
+        TDP: TryConvert<NamedValue<number>>((d) => new NamedValue<number>(parseInt(d.TDP.replace('W', '')), d.TDP), data, new NamedValue<number>(0, "-")),
+        Architecture: TryConvert<NamedValue<string>>((d) => new NamedValue<string>(d.Architektur, d.Architektur), data, new NamedValue<string>("", "-")),
+        Chipsets: TryConvert<NamedValue<string[]>>((d) => new NamedValue<string[]>(parseChipset(d["Chipsatz-Eignung"]), d["Chipsatz-Eignung"]), data, new NamedValue<string[]>([], "-")),
+        HasIntegratedGraphic: TryConvert<NamedValue<boolean>>((d) => new NamedValue<boolean>(d.Grafik.toLowerCase() !== "nein", d.Grafik), data, new NamedValue<boolean>(false, "-")),
+        L2Cache: TryConvert<NamedValue<number>>((d) => new NamedValue<number>(parseFloat(d["L2-Cache"].replace('MiB', '')), d["L2-Cache"]), data, new NamedValue<number>(0, "-")),
+        L3Cache: TryConvert<NamedValue<number>>((d) => new NamedValue<number>(parseFloat(d["L3-Cache"].replace('MiB', '')), d["L3-Cache"]), data, new NamedValue<number>(0, "-")),
+        Socket: TryConvert<NamedValue<string>>((d) => new NamedValue<string>(d.Sockel, d.Sockel), data, new NamedValue<string>("", "-")),
+        DDRVersions: TryConvert<NamedValue<number[]>>((d) => new NamedValue<number[]>(parseDDRVersion(d.Speicherkompatibilität), d.Speicherkompatibilität), data, new NamedValue<number[]>([0], "-")),
+        
     };
     return ret;
 }

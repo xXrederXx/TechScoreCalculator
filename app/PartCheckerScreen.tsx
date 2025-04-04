@@ -1,12 +1,14 @@
 import PartDisplay from '@/components/PartCheckerOnly/PartDisplay';
+import { ConvertToCPU } from '@/Lib/Converters/GHToCPU';
+import { ConvertToSSD } from '@/Lib/Converters/GHToSSD';
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 const PartCheckerScreen: React.FC = () => {
   return (
     <View style={styles.container}>
-      <PartDisplay/>
-      <PartDisplay/>
+      <PartDisplay PartName={"CPU"} convertFunc={(d) => ConvertToCPU(d)}/>
+      <PartDisplay PartName={"SSD"} convertFunc={(d) => ConvertToSSD(d)}/>
       <PartDisplay/>
       <PartDisplay/>
       <Text style={styles.text}>Part Checker Screen</Text>
