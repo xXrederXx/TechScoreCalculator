@@ -4,7 +4,7 @@ import GeizhalsInput from '@/components/GeizhalsInput';
 import { fetchDataGeizhals } from '@/Lib/DataFetcher';
 import KeyValueDisplay from '../KeyValueDisplay';
 import { NamedValue } from '@/Lib/Types';
-import theme from '@/Lib/theme';
+import { theme } from '@/Lib/theme';
 
 interface PartDisplayProps {
     PartName?: string,
