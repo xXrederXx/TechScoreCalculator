@@ -1,4 +1,4 @@
-import theme from '@/Lib/theme';
+import { theme } from '@/Lib/theme';
 import { useState } from 'react';
 import { Text, View, StyleSheet, TextInput, Alert } from 'react-native';
 

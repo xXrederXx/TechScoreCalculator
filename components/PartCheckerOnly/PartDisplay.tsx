@@ -4,7 +4,7 @@ import GeizhalsInput from '@/components/GeizhalsInput';
 import { fetchDataGeizhals } from '@/Lib/DataFetcher';
 import KeyValueDisplay from '../KeyValueDisplay';
 import { NamedValue } from '@/Lib/Types';
-import { theme } from '@/Lib/theme';
+import { PreStyle, theme } from '@/Lib/theme';
 
 interface PartDisplayProps {
     PartName?: string,
@@ -30,10 +30,10 @@ const PartDisplay = (props: PartDisplayProps) => {
 
     return (
         <View style={styles.mainContainer}>
-            <Text style={styles.title}>Geizhals {props.PartName} Lookup</Text>
+            <Text style={PreStyle.title}>Geizhals {props.PartName} Lookup</Text>
             <GeizhalsInput onUrlChange={(val) => seturl(val)} />
-            <TouchableOpacity style={styles.buttonStyle} onPress={getData}>
-                <Text style={styles.buttonText}>Fetch</Text>
+            <TouchableOpacity style={PreStyle.button} onPress={getData}>
+                <Text style={PreStyle.buttonText}>Fetch</Text>
             </TouchableOpacity>
             <KeyValueDisplay data={scrapedData} />
         </View>
@@ -51,27 +51,6 @@ const styles = StyleSheet.create({
         minWidth: 330,
         maxWidth: 660
     },
-    buttonStyle: {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        margin: 21,
-        width: 200,
-        height: 30,
-        borderRadius: 12,
-        backgroundColor: theme.colors.primary.normal
-    },
-    buttonText: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: theme.colors.text.verylight,
-    },
-    title: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        marginBottom: 12,
-        color: theme.colors.text.verylight,
-    }
 });
 
 export default PartDisplay;

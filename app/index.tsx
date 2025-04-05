@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import Hero from '@/components/IndexOnly/Hero';
 import NavigationSection from '@/components/IndexOnly/NavigationSection';
-import theme from '@/Lib/theme';
+import { PreStyle, theme } from '@/Lib/theme';
 
 const HomeScreen = () => {
   return (
@@ -15,10 +15,8 @@ const HomeScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: theme.colors.background.normal,
     color: theme.colors.text.normal,
-    padding: 20,
+    ...PreStyle.container
   },
 });
 
