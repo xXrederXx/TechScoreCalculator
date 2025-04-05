@@ -5,6 +5,7 @@ import { fetchDataGeizhals } from '@/Lib/DataFetcher';
 import KeyValueDisplay from '../KeyValueDisplay';
 import { NamedValue } from '@/Lib/Types';
 import { PreStyle, theme } from '@/Lib/theme';
+import BButton from '../BButton';
 
 interface PartDisplayProps {
     PartName?: string,
@@ -32,9 +33,7 @@ const PartDisplay = (props: PartDisplayProps) => {
         <View style={styles.mainContainer}>
             <Text style={PreStyle.title}>Geizhals {props.PartName} Lookup</Text>
             <GeizhalsInput onUrlChange={(val) => seturl(val)} />
-            <TouchableOpacity style={PreStyle.button} onPress={getData}>
-                <Text style={PreStyle.buttonText}>Fetch</Text>
-            </TouchableOpacity>
+            <BButton onClick={getData} buttonText={"Fetch"}/>
             <KeyValueDisplay data={scrapedData} />
         </View>
     );
