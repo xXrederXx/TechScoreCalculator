@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
         borderRadius: theme.borderRadius.md,
         alignItems: 'center',
         width: "100%",
-        height: "80%"
+        height: "100%"
     },
     topContainer: {
         display: "flex",

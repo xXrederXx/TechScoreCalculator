@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     },
     dataContainer: {
         marginTop: 15,
-        maxHeight: 300,
+        maxHeight: 380,
         width: '100%',
         height: "100%"
     },
