@@ -22,7 +22,6 @@ const GeizhalsInput = (props: GeizhalsInputProps) => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.label}>Enter Geizhals Product URL:</Text>
             <TextInput
                 style={[styles.input, !isValid && styles.inputError]}
                 keyboardType='url'
@@ -41,24 +40,18 @@ export default GeizhalsInput;
 
 const styles = StyleSheet.create({
     container: {
-        padding: 16,
-        backgroundColor: theme.colors.background.verylight,
         borderRadius: 8,
         elevation: 3,
-    },
-    label: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        marginBottom: 8,
-        color: theme.colors.text.verylight,
+        width: "100%"
     },
     input: {
         height: 40,
         borderColor: '#ccc',
         borderWidth: 1,
         borderRadius: 4,
-        paddingHorizontal: 10,
+        paddingHorizontal: theme.spacing.sm,
         backgroundColor: '#fff',
+        width: "100%"
     },
     inputError: {
         borderColor: 'red',

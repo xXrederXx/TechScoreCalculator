@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 import GeizhalsInput from '@/components/GeizhalsInput';
 import { fetchDataGeizhals } from '@/Lib/DataFetcher';
 import KeyValueDisplay from '../KeyValueDisplay';
@@ -16,6 +16,11 @@ const PartDisplay = (props: PartDisplayProps) => {
     const [url, seturl] = useState("")
     const [scrapedData, setScrapedData] = useState<{ value: NamedValue<any> }>({ value: new NamedValue(0, "") })
 
+    useEffect(() => {
+        getData()
+      }, []);
+    
+
     async function getData() {
         let response = await fetchDataGeizhals(url)
         try {
@@ -31,10 +36,15 @@ const PartDisplay = (props: PartDisplayProps) => {
 
     return (
         <View style={styles.mainContainer}>
-            <Text style={PreStyle.title}>Geizhals {props.PartName} Lookup</Text>
-            <GeizhalsInput onUrlChange={(val) => seturl(val)} />
-            <BButton onClick={getData} text={"Fetch"}/>
-            <KeyValueDisplay data={scrapedData} />
+            <View style={styles.topContainer}>
+                <Text style={[styles.title]}>Geizhals {props.PartName} Lookup</Text>
+                <Text style={[PreStyle.text, styles.subTitle]}>Enter Geizhals URL</Text>
+            </View>
+            <View style={styles.bottomContainer}>
+                <GeizhalsInput onUrlChange={(val) => seturl(val)} />
+                <BButton onClick={getData} text={"Update"} />
+                <KeyValueDisplay data={scrapedData} />
+            </View>
         </View>
     );
 };
@@ -42,14 +52,42 @@ const PartDisplay = (props: PartDisplayProps) => {
 
 const styles = StyleSheet.create({
     mainContainer: {
-        padding: 20,
-        backgroundColor: theme.colors.background.light,
-        borderRadius: 10,
+        padding: theme.spacing.md,
         alignItems: 'center',
-        elevation: 3,
-        minWidth: 330,
-        maxWidth: 660
+        width: "50%",
+        height: "80%"
     },
+    bottomContainer: {
+        padding: theme.spacing.xs,
+        backgroundColor: theme.colors.background.light,
+        borderRadius: theme.borderRadius.md,
+        alignItems: 'center',
+        width: "100%",
+        height: "80%"
+    },
+    topContainer: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        padding: theme.spacing.xs,
+        backgroundColor: theme.colors.background.light,
+        borderRadius: theme.borderRadius.md,
+        alignItems: 'center',
+        width: "100%",
+        margin: theme.spacing.sm
+    },
+    title: {
+        textAlign: "left",
+        width: "100%",
+        fontSize: theme.fontSizes.xl,
+        fontWeight: theme.fontWeights.bold,
+        color: theme.colors.text.light,
+    },
+    subTitle: {
+        textAlign: "right",
+        width: "100%",
+        alignSelf: "flex-end"
+    }
 });
 
 export default PartDisplay;
