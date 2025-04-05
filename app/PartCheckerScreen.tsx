@@ -1,6 +1,6 @@
 import PartDisplay from '@/components/PartCheckerOnly/PartDisplay';
-import { ConvertToCPU } from '@/Lib/Converters/GHToCPU';
-import { ConvertToSSD } from '@/Lib/Converters/GHToSSD';
+import { CalculateCPUScores, ConvertToCPU } from '@/Lib/Converters/GHToCPU';
+import { CalculateSSDScores, ConvertToSSD } from '@/Lib/Converters/GHToSSD';
 import { PreStyle, theme } from '@/Lib/theme';
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
@@ -8,8 +8,8 @@ import { View, Text, StyleSheet } from 'react-native';
 const PartCheckerScreen: React.FC = () => {
   return (
     <View style={styles.container}>
-      <PartDisplay PartName={"CPU"} convertFunc={(d) => ConvertToCPU(d)} />
-      <PartDisplay PartName={"SSD"} convertFunc={(d) => ConvertToSSD(d)} />
+      <PartDisplay PartName={"CPU"} convertFunc={(d) => ConvertToCPU(d)} scoreFunc={(d) => CalculateCPUScores(d)} />
+      <PartDisplay PartName={"SSD"} convertFunc={(d) => ConvertToSSD(d)} scoreFunc={(d) => CalculateSSDScores(d)}/>
     </View>
   );
 };

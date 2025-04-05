@@ -15,9 +15,16 @@ export function ConvertToCPU(data: any): CPUSpecs {
         L3Cache: TryConvert<NamedValue<number>>((d) => new NamedValue<number>(parseFloat(d["L3-Cache"].replace('MiB', '')), d["L3-Cache"]), data, new NamedValue<number>(0, "-")),
         Socket: TryConvert<NamedValue<string>>((d) => new NamedValue<string>(d.Sockel, d.Sockel), data, new NamedValue<string>("", "-")),
         DDRVersions: TryConvert<NamedValue<number[]>>((d) => new NamedValue<number[]>(parseDDRVersion(d.Speicherkompatibilität), d.Speicherkompatibilität), data, new NamedValue<number[]>([0], "-")),
-        
+
     };
     return ret;
+}
+
+export function CalculateCPUScores(data: CPUSpecs): string {
+    return "Speed Score: " +
+        (data.Threads.value * ((data.BaseClock.value + (2 * data.BoostClock.value)) / 3)).toFixed(2) +
+        " - Memory Score: " +
+        ((data.L2Cache.value * 3 + data.L3Cache.value) / 4).toFixed(2)
 }
 
 function parseDDRVersion(data: string) {

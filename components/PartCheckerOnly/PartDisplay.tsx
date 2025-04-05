@@ -10,16 +10,18 @@ import BButton from '../BButton';
 interface PartDisplayProps {
     PartName?: string,
     convertFunc?: (data: any) => any,
+    scoreFunc?: (data: any) => string,
 }
 
 const PartDisplay = (props: PartDisplayProps) => {
     const [url, seturl] = useState("")
     const [scrapedData, setScrapedData] = useState<{ value: NamedValue<any> }>({ value: new NamedValue(0, "") })
+    const [score, setScore] = useState<string>("")
 
     useEffect(() => {
         getData()
-      }, []);
-    
+    }, []);
+
 
     async function getData() {
         let response = await fetchDataGeizhals(url)
@@ -32,6 +34,7 @@ const PartDisplay = (props: PartDisplayProps) => {
             console.log("Convertion func not working. Error: " + err);
         }
         setScrapedData(response)
+        if (props.scoreFunc) { setScore(props.scoreFunc(response)) }
     }
 
     return (
@@ -43,6 +46,7 @@ const PartDisplay = (props: PartDisplayProps) => {
             <View style={styles.bottomContainer}>
                 <GeizhalsInput onUrlChange={(val) => seturl(val)} />
                 <BButton onClick={getData} text={"Update"} />
+                <Text>{score}</Text>
                 <KeyValueDisplay data={scrapedData} />
             </View>
         </View>

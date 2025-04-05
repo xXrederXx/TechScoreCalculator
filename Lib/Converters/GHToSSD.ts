@@ -12,6 +12,11 @@ export function ConvertToSSD(data: any): SSDSpecs {
     return ret;
 }
 
+export function CalculateSSDScores(data: SSDSpecs) : string
+{
+    return "Score: " + ((data.ReadSpeed.value + data.WriteSpeed.value) * (data.IOPS4KRead.value + data.IOPS4KWrite.value) / 1000).toFixed(2)
+}
+
 function parseIOPSRead(data: string): number {
     const regex: RegExp = /(\d+)k lesend/g;
     let match;
