@@ -5,14 +5,14 @@ import { Text, TouchableOpacity, StyleProp, ViewStyle, TextStyle } from 'react-n
 interface BButtonProps {
     buttonStyle?: StyleProp<ViewStyle>,
     textStyle?: StyleProp<TextStyle>,
-    buttonText?: string,
+    text?: string,
     onClick?: () => void,
 }
 
 const BButton = (props: BButtonProps) => {
     return (
         <TouchableOpacity style={props.buttonStyle ? props.buttonStyle : PreStyle.button} onPress={() => { if (props.onClick) { props.onClick(); } }}>
-            <Text style={props.textStyle ? props.textStyle : PreStyle.buttonText}>{props.buttonText}</Text>
+            <Text style={props.textStyle ? props.textStyle : PreStyle.buttonText}>{props.text}</Text>
         </TouchableOpacity>
     );
 };

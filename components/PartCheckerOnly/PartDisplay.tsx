@@ -33,7 +33,7 @@ const PartDisplay = (props: PartDisplayProps) => {
         <View style={styles.mainContainer}>
             <Text style={PreStyle.title}>Geizhals {props.PartName} Lookup</Text>
             <GeizhalsInput onUrlChange={(val) => seturl(val)} />
-            <BButton onClick={getData} buttonText={"Fetch"}/>
+            <BButton onClick={getData} text={"Fetch"}/>
             <KeyValueDisplay data={scrapedData} />
         </View>
     );
