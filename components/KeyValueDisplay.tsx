@@ -33,7 +33,8 @@ const styles = StyleSheet.create({
         marginTop: 15,
         maxHeight: 380,
         width: '100%',
-        height: "100%"
+        height: "100%",
+        flex: 1
     },
     dataItem: {
         flexDirection: 'row',

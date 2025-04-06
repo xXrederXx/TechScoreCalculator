@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import GeizhalsInput from '@/components/GeizhalsInput';
 import { fetchDataGeizhals } from '@/Lib/DataFetcher';
 import KeyValueDisplay from '../KeyValueDisplay';
@@ -45,21 +45,26 @@ const PartDisplay = (props: PartDisplayProps) => {
             </View>
             <View style={styles.bottomContainer}>
                 <GeizhalsInput onUrlChange={(val) => seturl(val)} />
-                <BButton onClick={getData} text={"Update"} />
-                <Text>{score}</Text>
+                <View style={styles.subContainer}>
+                    <BButton onClick={getData} text={"Update"} buttonStyle={[PreStyle.button, {width: 200}]} />
+                    <Text style={PreStyle.text}>{score}</Text>
+                </View>
                 <KeyValueDisplay data={scrapedData} />
             </View>
         </View>
     );
 };
+const cardHeight = Dimensions.get('window').height * 0.8
 
 
 const styles = StyleSheet.create({
     mainContainer: {
         padding: theme.spacing.md,
         alignItems: 'center',
-        width: "50%",
-        height: "80%"
+        flex: 1,
+        minWidth: 650,
+        maxWidth: 850,
+        height: cardHeight
     },
     bottomContainer: {
         padding: theme.spacing.xs,
@@ -67,7 +72,7 @@ const styles = StyleSheet.create({
         borderRadius: theme.borderRadius.md,
         alignItems: 'center',
         width: "100%",
-        height: "100%"
+        flex: 1
     },
     topContainer: {
         display: "flex",
@@ -79,6 +84,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: "100%",
         margin: theme.spacing.sm
+    },
+    subContainer: {
+        paddingVertical: theme.spacing.sm,
+        width: "100%",
+        display: "flex",
+        flexDirection: "row",
+        alignContent:"space-between",
+        justifyContent:"space-between",
+        alignItems:"center"
     },
     title: {
         textAlign: "left",
