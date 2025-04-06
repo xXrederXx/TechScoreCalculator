@@ -22,6 +22,7 @@ const GeizhalsInput = (props: GeizhalsInputProps) => {
 
     return (
         <View style={styles.container}>
+            <Text style={[styles.errorText, styles.visibleError]}> </Text>
             <TextInput
                 style={[PreStyle.input, !isValid && styles.inputError]}
                 keyboardType='url'
@@ -31,7 +32,9 @@ const GeizhalsInput = (props: GeizhalsInputProps) => {
                 autoCapitalize='none'
                 autoCorrect={false}
             />
-            {!isValid && <Text style={styles.errorText}>Invalid Geizhals URL</Text>}
+            <Text style={[styles.errorText, !isValid ? styles.visibleError : styles.hiddenError]}>
+                Invalid Geizhals URL
+            </Text>
         </View>
     );
 };
@@ -60,5 +63,12 @@ const styles = StyleSheet.create({
         color: 'red',
         marginTop: 4,
         fontSize: 12,
-    }
+    },
+    visibleError: {
+        color: 'red',
+    },
+    hiddenError: {
+        color: 'transparent',
+    },
+
 });
