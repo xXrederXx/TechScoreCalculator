@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, ActivityIndicator } from 'react-native';
 import GeizhalsInput from '@/components/GeizhalsInput';
 import { fetchDataGeizhals } from '@/Lib/DataFetcher';
 import KeyValueDisplay from '../KeyValueDisplay';
@@ -17,6 +17,7 @@ const PartDisplay = (props: PartDisplayProps) => {
     const [url, seturl] = useState("")
     const [scrapedData, setScrapedData] = useState<{ value: NamedValue<any> }>({ value: new NamedValue(0, "") })
     const [score, setScore] = useState<string>("")
+    const [isLoading, setIsLoading] = useState<boolean>(false)
 
     useEffect(() => {
         getData()
@@ -24,6 +25,7 @@ const PartDisplay = (props: PartDisplayProps) => {
 
 
     async function getData() {
+        setIsLoading(true)
         let response = await fetchDataGeizhals(url)
         try {
             if (props.convertFunc) {
@@ -35,18 +37,20 @@ const PartDisplay = (props: PartDisplayProps) => {
         }
         setScrapedData(response)
         if (props.scoreFunc) { setScore(props.scoreFunc(response)) }
+        setIsLoading(false)
     }
 
     return (
         <View style={styles.mainContainer}>
             <View style={styles.topContainer}>
-                <Text style={[styles.title]}>Geizhals {props.PartName} Lookup</Text>
+                <Text style={[styles.title]}>{props.PartName} Lookup</Text>
                 <Text style={[PreStyle.text, styles.subTitle]}>Enter Geizhals URL</Text>
             </View>
             <View style={styles.bottomContainer}>
                 <GeizhalsInput onUrlChange={(val) => seturl(val)} />
                 <View style={styles.subContainer}>
                     <BButton onClick={getData} text={"Update"} buttonStyle={[PreStyle.button, {width: 200}]} />
+                    {isLoading ? <ActivityIndicator color={theme.colors.info.normal} size={25} /> : null}
                     <Text style={PreStyle.text}>{score}</Text>
                 </View>
                 <KeyValueDisplay data={scrapedData} />
@@ -86,7 +90,8 @@ const styles = StyleSheet.create({
         margin: theme.spacing.sm
     },
     subContainer: {
-        paddingVertical: theme.spacing.sm,
+        padding: theme.spacing.sm,
+        paddingBottom: 0, 
         width: "100%",
         display: "flex",
         flexDirection: "row",
