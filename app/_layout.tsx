@@ -8,9 +8,9 @@ function HeaderButtons() {
 
   return (
     <View style={{ flexDirection: "row", gap: 12, paddingRight: 8 }}>
-      <BButton onClick={() => router.push("/PartCheckerScreen")} text="Part Checker"/>
-      <BButton onClick={() => router.push("/PcCheckerScreen")} text="Pc Checker"/>
-      <BButton onClick={() => router.push("/PcScoreScreen")} text="Pc Score"/>
+      <BButton onClick={() => router.push("/PartLookup")} text="Part Lookup"/>
+      <BButton onClick={() => router.push("/PcChecker")} text="Pc Checker"/>
+      <BButton onClick={() => router.push("/PcScore")} text="Pc Score"/>
     </View>
   );
 }

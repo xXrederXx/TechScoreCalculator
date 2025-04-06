@@ -9,11 +9,11 @@ const NavigationSection = () => {
   }
   return (
     <View style={styles.navContainer}>
-      {['PcChecker', 'PartChecker', 'PcScore'].map((screen) => (
+      {['PartLookup', 'PcChecker', 'PcScore'].map((screen) => (
         <TouchableOpacity
           key={screen}
           style={styles.button}
-          onPress={() => GoTo((screen + "Screen") as Href)}
+          onPress={() => GoTo((screen) as Href)}
         >
           <Text style={styles.buttonText}>{screen}</Text>
         </TouchableOpacity>
