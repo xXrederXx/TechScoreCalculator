@@ -1,4 +1,5 @@
 import { CPUSpecs, NamedValue } from "../Types";
+import { isNaNOrZero } from "../Util/Is";
 import { TryConvert } from "../Util/TryConvert";
 
 export function ConvertToCPU(data: any): CPUSpecs {
@@ -21,10 +22,18 @@ export function ConvertToCPU(data: any): CPUSpecs {
 }
 
 export function CalculateCPUScores(data: CPUSpecs): string {
-    return "Speed Score: " +
-        (data.Threads.value * ((data.BaseClock.value + (2 * data.BoostClock.value)) / 3)).toFixed(2) +
-        " - Memory Score: " +
-        ((data.L2Cache.value * 3 + data.L3Cache.value) / 4).toFixed(2)
+    const speedScore = data.Threads.value * ((data.BaseClock.value + (2 * data.BoostClock.value)) / 3);
+    const memScore = (data.L2Cache.value * 3 + data.L3Cache.value) / 4;
+    if (isNaNOrZero(speedScore) && isNaNOrZero(memScore)) {
+        return "Cant Calculate Scores"
+    }
+    if (isNaNOrZero(speedScore)) {
+        return "Cant Calculate Speed Score - Memory Score: " + memScore.toFixed(2)
+    }
+    if (isNaNOrZero(memScore)) {
+        return "Speed Score: " + speedScore.toFixed(2) + " - Cant Calculate Memory Score"
+    }
+    return "Speed Score: " + speedScore.toFixed(2) + " - Memory Score: " + memScore.toFixed(2)
 }
 
 function parseDDRVersion(data: string) {

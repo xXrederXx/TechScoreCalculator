@@ -1,4 +1,5 @@
 import { NamedValue, SSDSpecs } from "../Types";
+import { isNaNOrZero } from "../Util/Is";
 import { TryConvert } from "../Util/TryConvert";
 
 export function ConvertToSSD(data: any): SSDSpecs {
@@ -11,10 +12,14 @@ export function ConvertToSSD(data: any): SSDSpecs {
     };
     return ret;
 }
-
 export function CalculateSSDScores(data: SSDSpecs) : string
 {
-    return "Score: " + ((data.ReadSpeed.value + data.WriteSpeed.value) * (data.IOPS4KRead.value + data.IOPS4KWrite.value) / 1000).toFixed(2)
+    const score = (data.ReadSpeed.value + data.WriteSpeed.value) * (data.IOPS4KRead.value + data.IOPS4KWrite.value) / 100000;
+    if(isNaNOrZero(score))
+    {
+        return "Cant Calculate Score"
+    }
+    return "Score: " + score.toFixed(2)
 }
 
 function parseIOPSRead(data: string): number {
