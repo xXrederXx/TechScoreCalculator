@@ -21,6 +21,15 @@ export interface SSDSpecs{
     IOPS4KWrite: NamedValue<number>,
 }
 
+export interface RAMSpecs {
+    Speed: NamedValue<number>,
+    DDRVersion: NamedValue<number>,
+    CL: NamedValue<number>,
+    tRCD: NamedValue<number>,
+    tRP: NamedValue<number>,
+    tRAS: NamedValue<number>
+}
+
 export class NamedValue<T>
 {
     value: T;

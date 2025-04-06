@@ -1,6 +1,7 @@
 import PartDisplay from '@/components/PartCheckerOnly/PartDisplay';
 import { CalculateCPUScores, ConvertToCPU } from '@/Lib/Converters/GHToCPU';
 import { CalculateSSDScores, ConvertToSSD } from '@/Lib/Converters/GHToSSD';
+import { CalculateRAMScores, ConvertToRAM } from '@/Lib/Converters/GHToRAM';
 import { PreStyle, theme } from '@/Lib/theme';
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
@@ -11,6 +12,7 @@ const PartCheckerScreen: React.FC = () => {
       <ScrollView style={styles.scroll} contentContainerStyle={styles.contentContainerStyle}>
         <PartDisplay PartName={"CPU"} convertFunc={(d) => ConvertToCPU(d)} scoreFunc={(d) => CalculateCPUScores(d)} />
         <PartDisplay PartName={"SSD"} convertFunc={(d) => ConvertToSSD(d)} scoreFunc={(d) => CalculateSSDScores(d)} />
+        <PartDisplay PartName={"RAM"} convertFunc={(d) => ConvertToRAM(d)} scoreFunc={(d) => CalculateRAMScores(d)} />
       </ScrollView>
     </View>
   );
