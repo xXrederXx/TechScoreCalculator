@@ -1,4 +1,4 @@
-import PartDisplay from '@/components/PartCheckerOnly/PartDisplay';
+import PartDisplay from '@/components/PartDisplay';
 import { CalculateCPUScores, ConvertToCPU } from '@/Lib/Converters/GHToCPU';
 import { CalculateSSDScores, ConvertToSSD } from '@/Lib/Converters/GHToSSD';
 import { CalculateRAMScores, ConvertToRAM } from '@/Lib/Converters/GHToRAM';

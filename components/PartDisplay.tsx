@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Dimensions, ActivityIndicator } from 'react-native';
 import GeizhalsInput from '@/components/GeizhalsInput';
 import { fetchDataGeizhals } from '@/Lib/DataFetcher';
-import KeyValueDisplay from '../KeyValueDisplay';
+import KeyValueDisplay from './KeyValueDisplay';
 import { NamedValue } from '@/Lib/Types';
 import { PreStyle, theme } from '@/Lib/theme';
-import BButton from '../BButton';
+import BButton from './BButton';
 
 interface PartDisplayProps {
     PartName?: string,
