@@ -1,4 +1,4 @@
-import { theme } from '@/Lib/theme';
+import { PreStyle, theme } from '@/Lib/theme';
 import { useState } from 'react';
 import { Text, View, StyleSheet, TextInput, Alert } from 'react-native';
 
@@ -23,7 +23,7 @@ const GeizhalsInput = (props: GeizhalsInputProps) => {
     return (
         <View style={styles.container}>
             <TextInput
-                style={[styles.input, !isValid && styles.inputError]}
+                style={[PreStyle.input, !isValid && styles.inputError]}
                 keyboardType='url'
                 value={url}
                 onChangeText={validateURL}
