@@ -1,8 +1,41 @@
-# Welcome to your Expo app 👋
+<h1 align="center">Tech Score Calculator</h1><hr>
+<p align="center">
+  <a href="#key-features">Key Features</a> •
+  <a href="#how-to-use">How To Use</a> •
+  <a href="#TODO">TODO</a> •
+  <a href="#license">License</a>
+</p>
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## Overview
+Tech Score Calculator is an intuitive tool designed to help users evaluate and compare the technical performance of computer components, including CPUs, SSDs, and RAM. By analyzing details from Geizhals URLs, the calculator provides valuable insights into specifications and compatibility, enabling users to make well-informed decisions when building or upgrading their PC setups. It is also able to check a build config for conflicts, like incompatible CPU and Motherboard
 
-## Get started
+## Features
+- **CPU Lookup**: Enter a Geizhals URL to retrieve detailed specifications and performance metrics for a CPU, including:
+  - Speed Score
+  - Memory Score
+  - Number of Cores and Threads
+  - Base and Boost Clock Speeds
+  - Architecture
+  - Chipsets
+  - Cache Details
+  - Power Consumption (TDP)
+  - Supported DDR Versions
+  - Price Range (Low, Mid, High)
+
+- **SSD Lookup**: Enter a Geizhals URL to obtain SSD details, such as:
+  - Capacity
+  - Read/Write Speeds
+  - IOPS (Input/Output Operations Per Second) Ratings
+  - Price Range (Low, Mid, High)
+
+- **RAM Lookup**: Enter a Geizhals URL to access information about RAM modules, including:
+  - Speed
+  - DDR Version
+  - Latency and Timings (CL, tRCD, tRP, tRAS)
+  - Price Range (Low, Mid, High)
+- **Calculate Scores**: It can calculate scores based on the properties of the Component.
+- **Pc Check**: Checks if there are conflicts between components.
+## How to Use
 
 1. Install dependencies
 
@@ -10,41 +43,26 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
    npm install
    ```
 
-2. Start the app
+2. Run in a CMD
 
    ```bash
-    npx expo start
+    cd /TechScoreCalculato/server
+    tsc
+   ```
+3. Start the App
+
+   ```bash
+    node launcher.js
    ```
 
-In the output, you'll find options to open the app in a
+You should see some text idicating that a server was started on "localhost:3001" and after, metro should start. You can now go onto "localhost:8081"
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## License
+This project is licensed under the **IDK what license** license.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+**You are free to:**
+- Share and adapt the library for personal and commercial projects.
 
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+**Restrictions:**
+- You may not sell this library as your own product.
+- No attribution is required.
