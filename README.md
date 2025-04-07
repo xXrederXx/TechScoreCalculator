@@ -1,8 +1,8 @@
 <h1 align="center">Tech Score Calculator</h1><hr>
 <p align="center">
-  <a href="#key-features">Key Features</a> •
+  <a href="#overview">Overview</a> •
+  <a href="#features">Features</a> •
   <a href="#how-to-use">How To Use</a> •
-  <a href="#TODO">TODO</a> •
   <a href="#license">License</a>
 </p>
 
