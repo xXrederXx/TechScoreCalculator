@@ -39,41 +39,61 @@ export async function scrapeSpecs(url: string): Promise<{ [key: string]: string;
     return specs;
 }
 
-export async function scrapePrice(url: string): Promise<{ [key: string]: string; }> {
-    console.log("Start Scrape");
+export async function scrapePrice(url: string): Promise<{ [key: string]: string }> {
+    console.log("Start Price Scrape");
 
     if (!url.includes("geizhals.de")) {
         return { error: "Invalid URL. Must be from geizhals.de\n URL: " + url };
     }
 
+    console.log("Launche Browser");
+
     const browser = await puppeteer.launch({
         headless: true,
         executablePath: require("puppeteer").executablePath(), // Use Puppeteer's bundled Chromium
-        args: ["--no-sandbox", "--disable-setuid-sandbox"], // Fix permission issues
+        args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
 
+    console.log("Load Page");
     const page = await browser.newPage();
     await page.goto(url, { waitUntil: "networkidle2" });
 
+    // Wait for the prices to be visible
+    console.log("Wait selector");
+    await page.waitForSelector("span.variant__header__pricehistory__pricerange > strong > span.gh_price", {timeout: 5000});
+
+    console.log("Evaluet");
     const scraped = await page.evaluate(() => {
-        const priceObj: number[] = [];
+        const prices: number[] = [];
 
-        document.querySelectorAll("span.variant__header__pricehistory__pricerange > strong").forEach((elm) => {
-            priceObj.push(parseFloat(elm.querySelector("span.gh_price")?.textContent ?? "0"))
-        })
+        document.querySelectorAll("span.variant__header__pricehistory__pricerange > strong > span.gh_price").forEach((priceSpan) => {
+            const rawText = priceSpan.textContent ?? "";
+            const numericText = rawText.replace(/[^\d,.-]/g, "").replace(",", ".");
+            const value = parseFloat(numericText);
+            if (!isNaN(value)) {
+                prices.push(value);
+            }
+        });
 
-        return priceObj;
+        return prices;
     });
 
+    console.log("Close Browser");
     await browser.close();
-    console.log("End Scrape");
+    console.log("Scraped prices:", scraped);
+    console.log("End Price Scrape");
 
-    if (scraped.length !== 2) {
-        return { error: "Got more or less than 2 elemnts.\n URL: " + url + "\n data: " + scraped.join(", ") };
+    if (scraped.length < 2) {
+        return {
+            error: "Expected at least 2 prices.\n URL: " + url + "\n data: " + scraped.join(", "),
+        };
     }
 
+    const min = Math.min(...scraped);
+    const max = Math.max(...scraped);
+
     return {
-        min: (scraped[0] < scraped[1] ? scraped[0] : scraped[1]).toFixed(2),
-        max: (scraped[0] > scraped[1] ? scraped[0] : scraped[1]).toFixed(2)
+        min: min.toFixed(2),
+        max: max.toFixed(2),
     };
 }

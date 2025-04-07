@@ -10,7 +10,7 @@ export function ConvertToRAM(data: any, price: Price): RAMSpecs {
         tRCD: TryConvert<NamedValue<number>>((d) => new NamedValue<number>(parseInt(d["Row-to-Column Delay tRCD"]), d["Row-to-Column Delay tRCD"]), data, new NamedValue<number>(0, "-")),
         tRP: TryConvert<NamedValue<number>>((d) => new NamedValue<number>(parseInt(d["Row Precharge Time tRP"]), d["Row Precharge Time tRP"]), data, new NamedValue<number>(0, "-")),
         tRAS: TryConvert<NamedValue<number>>((d) => new NamedValue<number>(parseInt(d["Active-to-Precharge Time tRAS"]), d["Active-to-Precharge Time tRAS"]), data, new NamedValue<number>(0, "-")),
-        Price: new NamedValue<Price>(price, "Low:" + price.min + " Mid:" + price.avg + "High:" + price.max)
+        Price: new NamedValue<Price>(price, "Low:" + price.min + " Mid:" + price.avg + " High:" + price.max)
 
     };
     return ret;

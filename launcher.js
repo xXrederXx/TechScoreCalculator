@@ -40,14 +40,14 @@ expoProcess.on("error", (err) => console.error(`❌ Error starting Expo: ${err.m
 serverProcess.on("error", (err) => console.error(`❌ Error starting Server: ${err.message} + Stack ${err.stack} + cause ${err.cause}`));
 
 // Ensure both processes exit together
-const shutdown = () => {
-    console.log("Shutting down...");
+function shutdown(msg) {
+    console.log("Shutting down...\nReason: "+msg);
     expoProcess.kill();
     serverProcess.kill();
     process.exit();
 };
 
-expoProcess.on("exit", shutdown);
-serverProcess.on("exit", shutdown);
-process.on("SIGINT", shutdown);
-process.on("SIGTERM", shutdown);
+expoProcess.on("exit", () => shutdown("Expo Process Exit"));
+serverProcess.on("exit", () => shutdown("Server Process Exit"));
+process.on("SIGINT", () => shutdown("SIGINT"));
+process.on("SIGTERM", () => shutdown("SIGTERM"));

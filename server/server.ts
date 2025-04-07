@@ -1,3 +1,5 @@
+// RUN "tsc" after changes
+
 import express from 'express';
 import cors from 'cors';
 import { scrapePrice, scrapeSpecs } from './scraper';
@@ -17,7 +19,7 @@ app.get('/scrapeGH', async (req:any, res:any) => {
         const data = await scrapeSpecs(url);
         res.json(data);
     } catch (error: any) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ error: error.message});
     }
 });
 
@@ -32,7 +34,7 @@ app.get('/scrapeGHPrice', async (req:any, res:any) => {
         const data = await scrapePrice(url);
         res.json(data);
     } catch (error: any) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ error: "->" + error.message });
     }
 });
 

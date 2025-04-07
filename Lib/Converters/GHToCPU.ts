@@ -16,7 +16,7 @@ export function ConvertToCPU(data: any, price: Price): CPUSpecs {
         L3Cache: TryConvert<NamedValue<number>>((d) => new NamedValue<number>(parseFloat(d["L3-Cache"].replace('MiB', '')), d["L3-Cache"]), data, new NamedValue<number>(0, "-")),
         Socket: TryConvert<NamedValue<string>>((d) => new NamedValue<string>(d.Sockel, d.Sockel), data, new NamedValue<string>("", "-")),
         DDRVersions: TryConvert<NamedValue<number[]>>((d) => new NamedValue<number[]>(parseDDRVersion(d.Speicherkompatibilität), d.Speicherkompatibilität), data, new NamedValue<number[]>([0], "-")),
-        Price: new NamedValue<Price>(price, "Low:" + price.min + " Mid:" + price.avg + "High:" + price.max)
+        Price: new NamedValue<Price>(price, "Low:" + price.min + " Mid:" + price.avg + " High:" + price.max)
     };
     return ret;
 }
