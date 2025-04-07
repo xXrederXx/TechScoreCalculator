@@ -1,3 +1,5 @@
+import { number } from "yargs";
+
 export interface CPUSpecs{
     Price: NamedValue<Price>,
     Cores : NamedValue<number>,
@@ -65,7 +67,7 @@ export interface PSUSpecs {
 
 export interface CaseSpecs {
     Price: NamedValue<Price>,
-    FormFactorSupport: NamedValue<string[]>, // e.g., ["ATX", "Micro-ATX"]
+    MaxFormFactorSupport: NamedValue<string>, // e.g., ["ATX", "Micro-ATX"]
     MaxGPULength: NamedValue<number>, // in mm
     MaxCPUCoolerHeight: NamedValue<number>, // in mm
 }
@@ -96,10 +98,10 @@ export class Price
     max:number;
     avg:number;
 
-    constructor(min:number, max:number) {
+    constructor(min: number, max: number, avg?: number) {
         this.min = min;
         this.max = max;
-        this.avg = (min + max) / 2
+        this.avg = avg !== undefined ? avg : (min + max) / 2;
     }
 }
 export class NamedValue<T>
