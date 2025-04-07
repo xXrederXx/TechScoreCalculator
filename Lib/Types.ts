@@ -1,4 +1,5 @@
 export interface CPUSpecs{
+    Price: NamedValue<Price>,
     Cores : NamedValue<number>,
     Threads: NamedValue<number>,
     BoostClock: NamedValue<number>,
@@ -14,6 +15,7 @@ export interface CPUSpecs{
 }
 
 export interface SSDSpecs{
+    Price: NamedValue<Price>,
     Capacity: NamedValue<number>,
     ReadSpeed: NamedValue<number>,
     WriteSpeed: NamedValue<number>,
@@ -22,6 +24,7 @@ export interface SSDSpecs{
 }
 
 export interface RAMSpecs {
+    Price: NamedValue<Price>,
     Speed: NamedValue<number>,
     DDRVersion: NamedValue<number>,
     CL: NamedValue<number>,
@@ -31,6 +34,7 @@ export interface RAMSpecs {
 }
 
 export interface GPUSpecs {
+    Price: NamedValue<Price>,
     VRAM: NamedValue<number>, // in GB
     BaseClock: NamedValue<number>, // in MHz
     BoostClock: NamedValue<number>, // in MHz
@@ -40,6 +44,7 @@ export interface GPUSpecs {
 }
 
 export interface MotherboardSpecs {
+    Price: NamedValue<Price>,
     Socket: NamedValue<string>,
     Chipset: NamedValue<string>,
     FormFactor: NamedValue<string>, // e.g., "ATX", "mATX"
@@ -51,6 +56,7 @@ export interface MotherboardSpecs {
 }
 
 export interface PSUSpecs {
+    Price: NamedValue<Price>,
     Wattage: NamedValue<number>, // in Watts
     EfficiencyRating: NamedValue<string>, // e.g., "80+ Gold"
     Modular: NamedValue<boolean>,
@@ -58,12 +64,14 @@ export interface PSUSpecs {
 }
 
 export interface CaseSpecs {
+    Price: NamedValue<Price>,
     FormFactorSupport: NamedValue<string[]>, // e.g., ["ATX", "Micro-ATX"]
     MaxGPULength: NamedValue<number>, // in mm
     MaxCPUCoolerHeight: NamedValue<number>, // in mm
 }
 
 export interface CPUCoolerSpecs {
+    Price: NamedValue<Price>,
     Height: NamedValue<number>, // in mm
     TDP: NamedValue<number>, // Cooling capacity in Watts
     SocketCompatibility: NamedValue<string[]>, // e.g., ["AM4", "LGA1700"]
@@ -72,6 +80,7 @@ export interface CPUCoolerSpecs {
 }
 
 export interface PCSpecs{
+    Price: NamedValue<Price>,
     CPU: CPUSpecs,
     GPU: GPUSpecs,
     RAM: RAMSpecs,
@@ -80,6 +89,18 @@ export interface PCSpecs{
     PSU: PSUSpecs,
     Case: CaseSpecs,
     CPUCooler: CPUCoolerSpecs
+}
+export class Price
+{
+    min:number;
+    max:number;
+    avg:number;
+
+    constructor(min:number, max:number) {
+        this.min = min;
+        this.max = max;
+        this.avg = (min + max) / 2
+    }
 }
 export class NamedValue<T>
 {

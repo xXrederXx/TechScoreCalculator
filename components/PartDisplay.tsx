@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Dimensions, ActivityIndicator } from 'react-native';
 import GeizhalsInput from '@/components/GeizhalsInput';
-import { fetchDataGeizhals } from '@/Lib/DataFetcher';
+import { fetchDataGeizhals, fetchPriceGeizhals } from '@/Lib/DataFetcher';
 import KeyValueDisplay from './KeyValueDisplay';
-import { NamedValue } from '@/Lib/Types';
+import { NamedValue, Price } from '@/Lib/Types';
 import { PreStyle, theme } from '@/Lib/theme';
 import BButton from './BButton';
 
 interface PartDisplayProps {
     PartName?: string,
-    convertFunc?: (data: any) => any,
+    convertFunc?: (data: any, price: Price) => any,
     scoreFunc?: (data: any) => string,
 }
 
@@ -27,9 +27,10 @@ const PartDisplay = (props: PartDisplayProps) => {
     async function getData() {
         setIsLoading(true)
         let response = await fetchDataGeizhals(url)
+        let price = await fetchPriceGeizhals(url)
         try {
             if (props.convertFunc) {
-                response = props.convertFunc(response);
+                response = props.convertFunc(response, price);
                 console.log(response);
             }
         } catch (err) {

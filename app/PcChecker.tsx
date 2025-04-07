@@ -1,7 +1,6 @@
 import NamedGHInput from '@/components/PcCheckerOnly/NamedGHInput';
 import { fetchDataGeizhals } from '@/Lib/DataFetcher';
 import { PreStyle, theme } from '@/Lib/theme';
-import { PCSpecs } from '@/Lib/Types';
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 

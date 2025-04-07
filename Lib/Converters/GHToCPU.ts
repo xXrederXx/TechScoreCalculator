@@ -1,8 +1,8 @@
-import { CPUSpecs, NamedValue } from "../Types";
+import { CPUSpecs, NamedValue, Price } from "../Types";
 import { isNaNOrZero } from "../Util/Is";
 import { TryConvert } from "../Util/TryConvert";
 
-export function ConvertToCPU(data: any): CPUSpecs {
+export function ConvertToCPU(data: any, price: Price): CPUSpecs {
     let ret = {
         Cores: TryConvert<NamedValue<number>>((d) => new NamedValue<number>(parseInt(d.Kerne), d.Kerne), data, new NamedValue<number>(0, "-")),
         Threads: TryConvert<NamedValue<number>>((d) => new NamedValue<number>(parseInt(d.Threads), d.Threads), data, new NamedValue<number>(0, "-")),
@@ -16,7 +16,7 @@ export function ConvertToCPU(data: any): CPUSpecs {
         L3Cache: TryConvert<NamedValue<number>>((d) => new NamedValue<number>(parseFloat(d["L3-Cache"].replace('MiB', '')), d["L3-Cache"]), data, new NamedValue<number>(0, "-")),
         Socket: TryConvert<NamedValue<string>>((d) => new NamedValue<string>(d.Sockel, d.Sockel), data, new NamedValue<string>("", "-")),
         DDRVersions: TryConvert<NamedValue<number[]>>((d) => new NamedValue<number[]>(parseDDRVersion(d.Speicherkompatibilität), d.Speicherkompatibilität), data, new NamedValue<number[]>([0], "-")),
-
+        Price: new NamedValue<Price>(price, "Low:" + price.min + " Mid:" + price.avg + "High:" + price.max)
     };
     return ret;
 }
