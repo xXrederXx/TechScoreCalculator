@@ -114,3 +114,80 @@ export class NamedValue<T>
         this.UserVersion = UserVersion;
     }
 }
+
+export const defaultPcSpecs : PCSpecs = {
+    Price: new NamedValue(new Price(0, 0), ""),
+    CPU: {
+        Price: new NamedValue(new Price(0, 0), ""),
+        Cores: new NamedValue(0, ""),
+        Threads: new NamedValue(0, ""),
+        BoostClock: new NamedValue(0, ""),
+        BaseClock: new NamedValue(0, ""),
+        TDP: new NamedValue(0, ""),
+        Architecture: new NamedValue("", ""),
+        Chipsets: new NamedValue([], ""),
+        HasIntegratedGraphic: new NamedValue(false, ""),
+        L2Cache: new NamedValue(0, ""),
+        L3Cache: new NamedValue(0, ""),
+        Socket: new NamedValue("", ""),
+        DDRVersions: new NamedValue([], "")
+    },
+    GPU: {
+        Price: new NamedValue(new Price(0, 0), ""),
+        VRAM: new NamedValue(0, ""),
+        BaseClock: new NamedValue(0, ""),
+        BoostClock: new NamedValue(0, ""),
+        TDP: new NamedValue(0, ""),
+        Size: new NamedValue([0, 0, 0], ""),
+        AIInt8: new NamedValue(0, "")
+    },
+    RAM: {
+        Price: new NamedValue(new Price(0, 0), ""),
+        Speed: new NamedValue(0, ""),
+        DDRVersion: new NamedValue(0, ""),
+        CL: new NamedValue(0, ""),
+        tRCD: new NamedValue(0, ""),
+        tRP: new NamedValue(0, ""),
+        tRAS: new NamedValue(0, "")
+    },
+    SSD: {
+        Price: new NamedValue(new Price(0, 0), ""),
+        Capacity: new NamedValue(0, ""),
+        ReadSpeed: new NamedValue(0, ""),
+        WriteSpeed: new NamedValue(0, ""),
+        IOPS4KRead: new NamedValue(0, ""),
+        IOPS4KWrite: new NamedValue(0, "")
+    },
+    Motherboard: {
+        Price: new NamedValue(new Price(0, 0), ""),
+        Socket: new NamedValue("", ""),
+        Chipset: new NamedValue("", ""),
+        FormFactor: new NamedValue("", ""),
+        MemorySlots: new NamedValue(0, ""),
+        SupportedMemoryTypes: new NamedValue([], ""),
+        USBPorts: new NamedValue(0, ""),
+        WIFISupport: new NamedValue(false, ""),
+        BluetoothSupport: new NamedValue(false, "")
+    },
+    PSU: {
+        Price: new NamedValue(new Price(0, 0), ""),
+        Wattage: new NamedValue(0, ""),
+        EfficiencyRating: new NamedValue("", ""),
+        Modular: new NamedValue(false, ""),
+        FormFactor: new NamedValue("", "")
+    },
+    Case: {
+        Price: new NamedValue(new Price(0, 0), ""),
+        MaxFormFactorSupport: new NamedValue("", ""),
+        MaxGPULength: new NamedValue(0, ""),
+        MaxCPUCoolerHeight: new NamedValue(0, "")
+    },
+    CPUCooler: {
+        Price: new NamedValue(new Price(0, 0), ""),
+        Height: new NamedValue(0, ""),
+        TDP: new NamedValue(0, ""),
+        SocketCompatibility: new NamedValue([], ""),
+        RadiatorSize: new NamedValue(null, ""),
+        Type: new NamedValue("", "")
+    }
+}
