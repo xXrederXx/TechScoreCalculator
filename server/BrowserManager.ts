@@ -4,16 +4,6 @@ const MAX_BROWSERS = 3;
 const browserPool: Browser[] = [];
 let initializing = 0;
 
-export async function createBrowser(): Promise<Browser> {
-    initializing++;
-    const newBrowser = await puppeteer.launch({
-        headless: true,
-        executablePath: require("puppeteer").executablePath(),
-        args: ["--no-sandbox", "--disable-setuid-sandbox"],
-    });
-    initializing--;
-    return newBrowser;
-}
 
 export async function getAvailableBrowser(): Promise<Browser> {
     // Reuse an idle browser
@@ -46,11 +36,21 @@ export function releaseBrowser(browser: Browser) {
 }
 
 // Optional: Cleanup on shutdown
-export async function closeAllBrowsers() {
+async function closeAllBrowsers() {
     for (const browser of browserPool) {
         await browser.close();
     }
     browserPool.length = 0;
+}
+async function createBrowser(): Promise<Browser> {
+    initializing++;
+    const newBrowser = await puppeteer.launch({
+        headless: true,
+        executablePath: require("puppeteer").executablePath(),
+        args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    });
+    initializing--;
+    return newBrowser;
 }
 
 process.on("exit", closeAllBrowsers);
