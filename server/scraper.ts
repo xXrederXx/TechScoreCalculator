@@ -1,7 +1,7 @@
 import { Page } from "puppeteer-core";
 import { getAvailableBrowser, releaseBrowser } from "./BrowserManager";
 
-const RegexValidator = /https:\/\/geizhals.de\/[\w\d-]+.html/;
+const RegexValidator = /https:\/\/geizhals\.de\/[\w-]+\.html/;
 
 export async function scrapeSpecs(url: string): Promise<{ [key: string]: string; }> {
     const ret = await RunScrape(scrapeSpecsIntern, url);

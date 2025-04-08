@@ -7,7 +7,7 @@ interface GeizhalsInputProps {
 }
 
 const GeizhalsInput = (props: GeizhalsInputProps) => {
-    const RegexValidator = /https:\/\/geizhals.de\/[\w\d-]+.html/;
+    const RegexValidator = /https:\/\/geizhals\.de\/[\w-]+\.html/;
     const [url, setUrl] = useState("");
     const [isValid, setIsValid] = useState(true);
 
