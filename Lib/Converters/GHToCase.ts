@@ -3,7 +3,7 @@ import { TryConvert } from "../Util/TryConvert";
 
 export function ConvertToCase(data: any, price: Price): CaseSpecs {
     return {
-        MaxFormFactorSupport: TryConvert((d) => new NamedValue<string>(d["Mainboard max"], d["Formfaktor-Kompatibilität"]), data, new NamedValue<string>("", "-")),
+        MaxFormFactorSupport: TryConvert((d) => new NamedValue<string>(d["Mainboard max."], d["Mainboard max."]), data, new NamedValue<string>("", "-")),
         MaxGPULength: TryConvert((d) => new NamedValue<number>(parseGPU(d["Grafikkarten"]), d["Grafikkarten"]), data, new NamedValue<number>(0, "-")),
         MaxCPUCoolerHeight: TryConvert((d) => new NamedValue<number>(parseCooler(d["CPU-Kühler"]), d["CPU-Kühler"]), data, new NamedValue<number>(0, "-")),
         Price: new NamedValue<Price>(price, "Low:" + price.min + " Mid:" + price.avg + " High:" + price.max),

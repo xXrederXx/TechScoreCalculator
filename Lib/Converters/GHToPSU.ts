@@ -1,11 +1,10 @@
-import { strict } from "yargs";
 import { NamedValue, Price, PSUSpecs } from "../Types";
 import { TryConvert } from "../Util/TryConvert";
 
 export function ConvertToPSU(data: any, price: Price): PSUSpecs {
     return {
         Wattage: TryConvert((d) => new NamedValue<number>(parseWattage(d["Max. Combined Power"].replace("W", "")), d["Max. Combined Power"]), data, new NamedValue<number>(0, "-")),
-        EfficiencyRating: TryConvert((d) => new NamedValue<string>(parseEfficency(d["Effizienz"]), d["Effizienz"]), data, new NamedValue<string>("", "-")),
+        EfficiencyRating: TryConvert((d) => new NamedValue<string>(parseEfficency(d), parseEfficency(d)), data, new NamedValue<string>("", "-")),
         Modular: TryConvert((d) => new NamedValue<boolean>(d["Kabelmanagement"]?.toLowerCase() === "vollmodular", d["Kabelmanagement"]), data, new NamedValue<boolean>(false, "-")),
         FormFactor: TryConvert((d) => new NamedValue<string>(d["Formfaktor"], d["Formfaktor"]), data, new NamedValue<string>("", "-")),
         Price: new NamedValue<Price>(price, "Low:" + price.min + " Mid:" + price.avg + " High:" + price.max),
