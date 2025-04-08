@@ -22,6 +22,8 @@ const PcCheckerScreen: React.FC = () => {
     if (response) {
       setFunc(response, price)
     }
+    console.log(specs);
+    
   }
 
   return (
