@@ -9,7 +9,7 @@ export function ConvertToGPU(data: any, price: Price): GPUSpecs {
         TDP: TryConvert<NamedValue<number>>((d) => new NamedValue<number>(parseInt(d["TDP/TGP"].replace("W", "")), d["TDP/TGP"]), data, new NamedValue<number>(0, "-")),
         Size: TryConvert<NamedValue<number[]>>((d) => new NamedValue<number[]>(parseSize(d["Abmessungen"]), d["Abmessungen"]), data, new NamedValue<number[]>([], "-")),
         AIInt8: TryConvert<NamedValue<number>>((d) => new NamedValue<number>(parseFloat(d["AI-Rechenleistung (INT8)"].replace("TOPS", "")), d["AI-Rechenleistung (INT8)"]), data, new NamedValue<number>(0, "-")),
-        Price: new NamedValue<Price>(price, "Low:" + price.min + " Mid:" + price.avg + " High:" + price.max),
+        Price: new NamedValue<Price>(price, "Low:" + price.min + " Mid:" + price.avg.toFixed(2) + " High:" + price.max),
     };
     return ret;
 }

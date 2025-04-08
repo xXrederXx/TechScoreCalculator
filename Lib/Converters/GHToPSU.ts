@@ -7,7 +7,7 @@ export function ConvertToPSU(data: any, price: Price): PSUSpecs {
         EfficiencyRating: TryConvert((d) => new NamedValue<string>(parseEfficency(d), parseEfficency(d)), data, new NamedValue<string>("", "-")),
         Modular: TryConvert((d) => new NamedValue<boolean>(d["Kabelmanagement"]?.toLowerCase() === "vollmodular", d["Kabelmanagement"]), data, new NamedValue<boolean>(false, "-")),
         FormFactor: TryConvert((d) => new NamedValue<string>(d["Formfaktor"], d["Formfaktor"]), data, new NamedValue<string>("", "-")),
-        Price: new NamedValue<Price>(price, "Low:" + price.min + " Mid:" + price.avg + " High:" + price.max),
+        Price: new NamedValue<Price>(price, "Low:" + price.min + " Mid:" + price.avg.toFixed(2) + " High:" + price.max),
     };
 }
 

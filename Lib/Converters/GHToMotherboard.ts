@@ -11,7 +11,7 @@ export function ConvertToMotherboard(data: any, price: Price): MotherboardSpecs 
         USBPorts: TryConvert((d) => new NamedValue<number>(parseUSBPart(d["Anschlüsse extern"]), d["Anschlüsse extern"]), data, new NamedValue<number>(0, "-")),
         WIFISupport: TryConvert((d) => new NamedValue<boolean>(d["Wireless"]?.toLowerCase() !== "n/a", d["Wireless"]), data, new NamedValue<boolean>(false, "-")),
         BluetoothSupport: TryConvert((d) => new NamedValue<boolean>(d["Wireless"]?.toLowerCase() !== "n/a", d["Wireless"]), data, new NamedValue<boolean>(false, "-")),
-        Price: new NamedValue<Price>(price, "Low:" + price.min + " Mid:" + price.avg + " High:" + price.max),
+        Price: new NamedValue<Price>(price, "Low:" + price.min + " Mid:" + price.avg.toFixed(2) + " High:" + price.max),
     };
 }
 

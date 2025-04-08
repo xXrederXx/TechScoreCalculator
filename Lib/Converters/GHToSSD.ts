@@ -9,7 +9,7 @@ export function ConvertToSSD(data: any, price:Price): SSDSpecs {
         WriteSpeed: TryConvert<NamedValue<number>>((d) => new NamedValue<number>(parseInt(d.Schreiben), d.Schreiben), data, new NamedValue<number>(0, "-")),
         IOPS4KRead: TryConvert<NamedValue<number>>((d) => new NamedValue<number>(parseIOPSRead(d["IOPS 4K"]), d["IOPS 4K"]), data, new NamedValue<number>(0, "-")),
         IOPS4KWrite: TryConvert<NamedValue<number>>((d) => new NamedValue<number>(parseIOPSWrite(d["IOPS 4K"]), d["IOPS 4K"]), data, new NamedValue<number>(0, "-")),
-        Price: new NamedValue<Price>(price, "Low:" + price.min + " Mid:" + price.avg + " High:" + price.max)
+        Price: new NamedValue<Price>(price, "Low:" + price.min + " Mid:" + price.avg.toFixed(2) + " High:" + price.max)
 
     };
     return ret;

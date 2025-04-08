@@ -8,7 +8,7 @@ export function ConvertToCPUCooler(data: any, price: Price): CPUCoolerSpecs {
         SocketCompatibility: TryConvert((d) => new NamedValue<string[]>(parseSocket(d), parseSocket(d).join(", ")), data, new NamedValue<string[]>([], "-")),
         RadiatorSize: TryConvert((d) => new NamedValue<string | null>(d["Radiator"] || null, d["Radiator"]), data, new NamedValue<string | null>(null, "-")),
         Type: TryConvert((d) => new NamedValue<string>(d["Typ"] || d["Bauart"], d["Typ"] || d["Bauart"]), data, new NamedValue<string>("", "-")),
-        Price: new NamedValue<Price>(price, "Low:" + price.min + " Mid:" + price.avg + " High:" + price.max),
+        Price: new NamedValue<Price>(price, "Low:" + price.min + " Mid:" + price.avg.toFixed(2) + " High:" + price.max),
     };
 }
 
