@@ -11,7 +11,7 @@ import { fetchDataGeizhals, fetchPriceGeizhals } from '@/Lib/DataFetcher';
 import { PreStyle, theme } from '@/Lib/theme';
 import { defaultPcSpecs, PCSpecs, Price } from '@/Lib/Types';
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 
 const PcCheckerScreen: React.FC = () => {
   const [specs, setSpecs] = useState<PCSpecs>(defaultPcSpecs)
@@ -22,8 +22,6 @@ const PcCheckerScreen: React.FC = () => {
     if (response) {
       setFunc(response, price)
     }
-    console.log(specs);
-    
   }
 
   return (
@@ -79,7 +77,9 @@ const PcCheckerScreen: React.FC = () => {
         />
       </View>
       <View style={styles.subContainer}>
-
+        {/* <ScrollView>
+          <Text style={PreStyle.text}>{JSON.stringify(specs, null, 4)}</Text>
+        </ScrollView> */}
       </View>
     </View>
   );
