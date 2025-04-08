@@ -1,3 +1,4 @@
+import BButton from '@/components/BButton';
 import NamedGHInput from '@/components/PcCheckerOnly/NamedGHInput';
 import { ConvertToCase } from '@/Lib/Converters/GHToCase';
 import { ConvertToCPU } from '@/Lib/Converters/GHToCPU';
@@ -10,11 +11,13 @@ import { ConvertToSSD } from '@/Lib/Converters/GHToSSD';
 import { fetchDataGeizhals, fetchPriceGeizhals } from '@/Lib/DataFetcher';
 import { PreStyle, theme } from '@/Lib/theme';
 import { defaultPcSpecs, PCSpecs, Price } from '@/Lib/Types';
+import { CheckForConflicts } from '@/Lib/Util/ConflictChecker';
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
 
 const PcCheckerScreen: React.FC = () => {
   const [specs, setSpecs] = useState<PCSpecs>(defaultPcSpecs)
+  const [conflicts, setConflicts] = useState<React.JSX.Element[]>([])
 
   async function getData(url: string, setFunc: (data: any, p: Price) => void) {
     let response = await fetchDataGeizhals(url)
@@ -75,11 +78,10 @@ const PcCheckerScreen: React.FC = () => {
           })}
           name="CPU Cooler"
         />
+        <BButton onClick={() => setConflicts(CheckForConflicts(specs))} text='Check' />
       </View>
       <View style={styles.subContainer}>
-        {/* <ScrollView>
-          <Text style={PreStyle.text}>{JSON.stringify(specs, null, 4)}</Text>
-        </ScrollView> */}
+        <FlatList data={conflicts} renderItem={({item}) => item}/>
       </View>
     </View>
   );
@@ -99,7 +101,8 @@ const styles = StyleSheet.create({
     maxWidth: 700,
     minWidth: 360,
     borderRadius: theme.borderRadius.lg,
-    backgroundColor: theme.colors.primary.normal
+    backgroundColor: theme.colors.background.light,
+    padding: theme.spacing.md
   }
 });
 
