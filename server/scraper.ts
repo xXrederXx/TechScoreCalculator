@@ -1,9 +1,10 @@
 import puppeteer from "puppeteer-core";
 
+const RegexValidator = /https:\/\/geizhals.de\/[\w\d-]+.html/gm;
 export async function scrapeSpecs(url: string): Promise<{ [key: string]: string; }> {
     console.log("Start Scrape");
 
-    if (!url.includes("geizhals.de")) {
+    if (!RegexValidator.test(url)) {
         return { error: "Invalid URL. Must be from geizhals.de\n URL: " + url };
     }
 
@@ -42,7 +43,7 @@ export async function scrapeSpecs(url: string): Promise<{ [key: string]: string;
 export async function scrapePrice(url: string): Promise<{ [key: string]: string }> {
     console.log("Start Price Scrape");
 
-    if (!url.includes("geizhals.de")) {
+    if (!RegexValidator.test(url)) {
         return { error: "Invalid URL. Must be from geizhals.de\n URL: " + url };
     }
 
