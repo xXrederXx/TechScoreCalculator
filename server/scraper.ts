@@ -1,64 +1,7 @@
-import puppeteer, { Browser, Page } from "puppeteer-core";
+import { Page } from "puppeteer-core";
+import { getAvailableBrowser, releaseBrowser } from "./BrowserManager";
 
 const RegexValidator = /https:\/\/geizhals.de\/[\w\d-]+.html/gm;
-
-const MAX_BROWSERS = 3;
-const browserPool: Browser[] = [];
-let initializing = 0;
-
-async function createBrowser(): Promise<Browser> {
-    initializing++;
-    const newBrowser = await puppeteer.launch({
-        headless: true,
-        executablePath: require("puppeteer").executablePath(),
-        args: ["--no-sandbox", "--disable-setuid-sandbox"],
-    });
-    initializing--;
-    return newBrowser;
-}
-
-async function getAvailableBrowser(): Promise<Browser> {
-    // Reuse an idle browser
-    if (browserPool.length > 0) {
-        return browserPool.pop()!;
-    }
-
-    // If below limit, create a new one
-    if (browserPool.length + initializing < MAX_BROWSERS) {
-        return createBrowser();
-    }
-
-    // Otherwise wait for one to free up
-    return new Promise((resolve) => {
-        const interval = setInterval(() => {
-            if (browserPool.length > 0) {
-                clearInterval(interval);
-                resolve(browserPool.pop()!);
-            }
-        }, 100); // check every 100ms
-    });
-}
-
-function releaseBrowser(browser: Browser) {
-    if (browserPool.length < MAX_BROWSERS) {
-        browserPool.push(browser);
-    } else {
-        browser.close();
-    }
-}
-
-// Optional: Cleanup on shutdown
-async function closeAllBrowsers() {
-    for (const browser of browserPool) {
-        await browser.close();
-    }
-    browserPool.length = 0;
-}
-
-process.on("exit", closeAllBrowsers);
-process.on("SIGINT", () => { closeAllBrowsers().then(() => process.exit()); });
-process.on("SIGTERM", () => { closeAllBrowsers().then(() => process.exit()); });
-
 
 export async function scrapeSpecs(url: string): Promise<{ [key: string]: string; }> {
     return RunScrape(scrapeSpecsIntern, url)
@@ -66,6 +9,7 @@ export async function scrapeSpecs(url: string): Promise<{ [key: string]: string;
 export async function scrapePrice(url: string): Promise<{ [key: string]: string }> {
     return RunScrape(scrapePriceIntern, url)
 }
+
 async function RunScrape<T>(func: (url: string, page: Page) => Promise<T>, url: string): Promise<T> {
     const browser = await getAvailableBrowser();
     const page = await browser.newPage();
