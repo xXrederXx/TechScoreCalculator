@@ -5,7 +5,7 @@ const browserPool: Browser[] = [];
 let initializing = 0;
 
 
-export async function getAvailableBrowser(): Promise<Browser> {
+export async function getAvailableBrowser(): Promise<Browser | undefined> {
     // Reuse an idle browser
     if (browserPool.length > 0) {
         return browserPool.pop()!;
@@ -17,11 +17,18 @@ export async function getAvailableBrowser(): Promise<Browser> {
     }
 
     // Otherwise wait for one to free up
+    let time = 0;
     return new Promise((resolve) => {
         const interval = setInterval(() => {
+            time += 0.1
             if (browserPool.length > 0) {
                 clearInterval(interval);
                 resolve(browserPool.pop()!);
+            }
+            if(time > 2)
+            {
+                console.warn("Could not load a browser, try again")
+                resolve(undefined)
             }
         }, 100); // check every 100ms
     });

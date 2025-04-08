@@ -4,14 +4,20 @@ import { getAvailableBrowser, releaseBrowser } from "./BrowserManager";
 const RegexValidator = /https:\/\/geizhals.de\/[\w\d-]+.html/gm;
 
 export async function scrapeSpecs(url: string): Promise<{ [key: string]: string; }> {
-    return RunScrape(scrapeSpecsIntern, url)
+    const ret = await RunScrape(scrapeSpecsIntern, url);
+    return ret ? ret : { error: "Probably wasnt able to load browser"}
 }
 export async function scrapePrice(url: string): Promise<{ [key: string]: string }> {
-    return RunScrape(scrapePriceIntern, url)
+    const ret = await RunScrape(scrapePriceIntern, url);
+    return ret ? ret : { error: "Probably wasnt able to load browser"}
 }
 
-async function RunScrape<T>(func: (url: string, page: Page) => Promise<T>, url: string): Promise<T> {
+async function RunScrape<T>(func: (url: string, page: Page) => Promise<T>, url: string): Promise<T | undefined> {
     const browser = await getAvailableBrowser();
+    if(!browser)
+    {
+        return undefined
+    }
     const page = await browser.newPage();
     try {
         return await func(url, page);
