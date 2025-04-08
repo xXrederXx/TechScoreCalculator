@@ -1,0 +1,42 @@
+<h1 align="center">Test Links</h1><hr>
+
+- CPU
+  - https://geizhals.de/amd-ryzen-5-5600x-100-100000065box-a2392524.html
+  - https://geizhals.de/intel-core-ultra-7-265k-bxc80768265k-a3329421.html
+  - https://geizhals.de/amd-ryzen-9-9950x3d-100-100000719wof-a3381558.html
+  - https://geizhals.de/intel-core-i3-12100f-bx8071512100f-a2659497.html
+- GPU
+  - https://geizhals.de/msi-geforce-rtx-3060-ventus-2x-12g-oc-a2473953.html
+  - https://geizhals.de/sapphire-pulse-radeon-rx-9070-xt-11348-03-20g-a3429991.html
+  - https://geizhals.de/palit-geforce-rtx-5090-gamerock-ne75090019r5-gb2020g-a3382497.html
+  - https://geizhals.de/asrock-radeon-rx-6600-challenger-white-8gb-90-ga4uzz-00uanf-a3041653.html
+- RAM
+  - https://geizhals.de/corsair-dominator-titanium-rgb-schwarz-dimm-kit-64gb-cmp64gx5m2b6000c30-a3028302.html
+  - https://geizhals.de/kingston-fury-beast-schwarz-dimm-kit-32gb-kf560c30bbek2-32-a3164911.html?hloc=at&hloc=de&hloc=pl&hloc=uk
+  - https://geizhals.de/adata-xpg-lancer-blade-rgb-black-dimm-kit-32gb-ax5u6000c3016g-dtlabrbk-a3062837.html?hloc=at&hloc=de&hloc=pl&hloc=uk
+  - https://geizhals.de/crucial-so-dimm-kit-32gb-ct2k16g4sfra32a-a2326324.html?hloc=at&hloc=de&hloc=pl&hloc=uk
+- SSD
+  - https://geizhals.de/samsung-ssd-990-pro-2tb-mz-v9p2t0bw-a2795958.html
+  - https://geizhals.de/corsair-force-series-mp600-elite-1tb-cssd-f1000gbmp600enh-a3116438.html
+  - https://geizhals.de/kioxia-exceria-plus-g3-ssd-1tb-lsd10z001tg8-lsd10z001tc8-a3054921.html?hloc=at&hloc=de&hloc=pl&hloc=uk
+  - https://geizhals.de/lexar-professional-nm710-1tb-lnm710x001t-rnnng-a2891624.html?hloc=at&hloc=de&hloc=pl&hloc=uk
+- Motherboard
+  - https://geizhals.de/msi-b550-a-pro-a2295021.html
+  - https://geizhals.de/asus-b650e-max-gaming-wifi-90mb1ld0-m0eay0-a3417117.html
+  - https://geizhals.de/msi-mag-x870e-tomahawk-wifi-7e59-004r-a3383704.html
+  - https://geizhals.de/asus-rog-strix-z890-e-gaming-wifi-90mb1im0-m0eay0-a3330090.html?hloc=at&hloc=de&hloc=pl&hloc=uk
+- PSU
+  - https://geizhals.de/be-quiet-pure-power-12-m-750w-atx-3-0-bn343-a2884048.html
+  - https://geizhals.de/corsair-rmx-shift-series-rm850x-white-850w-atx-3-0-cp-9020274-eu-a3140694.html
+  - https://geizhals.de/msi-mag-a850gl-pcie5-850w-atx-3-0-306-7zp8a11-ce0-a2979546.html?hloc=at&hloc=de&hloc=pl&hloc=uk
+  - https://geizhals.de/seasonic-prime-tx-1600-noctua-edition-1600w-atx-3-1-ssr-1600tr2-ne-a3360154.html?hloc=at&hloc=de&hloc=pl&hloc=uk
+- Case
+  - https://geizhals.de/fractal-design-north-xl-chalk-white-tg-clear-fd-c-nor1x-04-a3147048.html
+  - https://geizhals.de/corsair-frame-4000d-cc-9011290-ww-a3382411.html
+  - https://geizhals.de/hyte-y60-cs-hyte-y60-b-a2694033.html
+  - https://geizhals.de/be-quiet-pure-base-500dx-schwarz-bgw37-a2273753.html?hloc=at&hloc=de&hloc=pl&hloc=uk
+- CPU Cooler
+  - https://geizhals.de/arctic-freezer-36-black-acfre00123a-a3144176.html
+  - https://geizhals.de/endorfy-fortis-5-black-argb-ey3a014-a3382877.html?hloc=at&hloc=de&hloc=pl&hloc=uk
+  - https://geizhals.de/gigabyte-aorus-waterforce-ii-360-gp-aorus-waterforce-360-ii-a3093857.html
+  - https://geizhals.de/arctic-liquid-freezer-iii-280-acfre00135a-a3128699.html?hloc=at&hloc=de&hloc=pl&hloc=uk
