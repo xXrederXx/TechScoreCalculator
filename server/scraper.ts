@@ -1,20 +1,90 @@
-import puppeteer from "puppeteer-core";
+import puppeteer, { Browser, Page } from "puppeteer-core";
 
 const RegexValidator = /https:\/\/geizhals.de\/[\w\d-]+.html/gm;
+
+const MAX_BROWSERS = 3;
+const browserPool: Browser[] = [];
+let initializing = 0;
+
+async function createBrowser(): Promise<Browser> {
+    initializing++;
+    const newBrowser = await puppeteer.launch({
+        headless: true,
+        executablePath: require("puppeteer").executablePath(),
+        args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    });
+    initializing--;
+    return newBrowser;
+}
+
+async function getAvailableBrowser(): Promise<Browser> {
+    // Reuse an idle browser
+    if (browserPool.length > 0) {
+        return browserPool.pop()!;
+    }
+
+    // If below limit, create a new one
+    if (browserPool.length + initializing < MAX_BROWSERS) {
+        return createBrowser();
+    }
+
+    // Otherwise wait for one to free up
+    return new Promise((resolve) => {
+        const interval = setInterval(() => {
+            if (browserPool.length > 0) {
+                clearInterval(interval);
+                resolve(browserPool.pop()!);
+            }
+        }, 100); // check every 100ms
+    });
+}
+
+function releaseBrowser(browser: Browser) {
+    if (browserPool.length < MAX_BROWSERS) {
+        browserPool.push(browser);
+    } else {
+        browser.close();
+    }
+}
+
+// Optional: Cleanup on shutdown
+async function closeAllBrowsers() {
+    for (const browser of browserPool) {
+        await browser.close();
+    }
+    browserPool.length = 0;
+}
+
+process.on("exit", closeAllBrowsers);
+process.on("SIGINT", () => { closeAllBrowsers().then(() => process.exit()); });
+process.on("SIGTERM", () => { closeAllBrowsers().then(() => process.exit()); });
+
+
 export async function scrapeSpecs(url: string): Promise<{ [key: string]: string; }> {
+    return RunScrape(scrapeSpecsIntern, url)
+}
+export async function scrapePrice(url: string): Promise<{ [key: string]: string }> {
+    return RunScrape(scrapePriceIntern, url)
+}
+async function RunScrape<T>(func: (url: string, page: Page) => Promise<T>, url: string): Promise<T> {
+    const browser = await getAvailableBrowser();
+    const page = await browser.newPage();
+    try {
+        return await func(url, page);
+    } finally {
+        await page.close();
+        releaseBrowser(browser); // ✅ return to pool
+    }
+}
+
+async function scrapeSpecsIntern(url: string, page: Page): Promise<{ [key: string]: string; }> {
     console.log("Start Scrape");
 
     if (!RegexValidator.test(url)) {
         return { error: "Invalid URL. Must be from geizhals.de\n URL: " + url };
     }
 
-    const browser = await puppeteer.launch({
-        headless: true,
-        executablePath: require("puppeteer").executablePath(), // Use Puppeteer's bundled Chromium
-        args: ["--no-sandbox", "--disable-setuid-sandbox"], // Fix permission issues
-    });
 
-    const page = await browser.newPage();
     await page.goto(url, { waitUntil: "networkidle2" });
 
     const specs = await page.evaluate(() => {
@@ -34,36 +104,20 @@ export async function scrapeSpecs(url: string): Promise<{ [key: string]: string;
         return specsObj;
     });
 
-    await browser.close();
     console.log("End Scrape");
-
     return specs;
 }
-
-export async function scrapePrice(url: string): Promise<{ [key: string]: string }> {
+async function scrapePriceIntern(url: string, page: Page): Promise<{ [key: string]: string }> {
     console.log("Start Price Scrape");
 
     if (!RegexValidator.test(url)) {
         return { error: "Invalid URL. Must be from geizhals.de\n URL: " + url };
     }
 
-    console.log("Launche Browser");
-
-    const browser = await puppeteer.launch({
-        headless: true,
-        executablePath: require("puppeteer").executablePath(), // Use Puppeteer's bundled Chromium
-        args: ["--no-sandbox", "--disable-setuid-sandbox"],
-    });
-
-    console.log("Load Page");
-    const page = await browser.newPage();
     await page.goto(url, { waitUntil: "networkidle2" });
 
-    // Wait for the prices to be visible
-    console.log("Wait selector");
-    await page.waitForSelector("span.variant__header__pricehistory__pricerange > strong > span.gh_price", {timeout: 5000});
+    await page.waitForSelector("span.variant__header__pricehistory__pricerange > strong > span.gh_price", { timeout: 5000 });
 
-    console.log("Evaluet");
     const scraped = await page.evaluate(() => {
         const prices: number[] = [];
 
@@ -79,9 +133,6 @@ export async function scrapePrice(url: string): Promise<{ [key: string]: string 
         return prices;
     });
 
-    console.log("Close Browser");
-    await browser.close();
-    console.log("Scraped prices:", scraped);
     console.log("End Price Scrape");
 
     if (scraped.length < 2) {
