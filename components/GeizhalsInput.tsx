@@ -7,13 +7,12 @@ interface GeizhalsInputProps {
 }
 
 const GeizhalsInput = (props: GeizhalsInputProps) => {
-    const RegexValidator = /https:\/\/geizhals.de\/[\w\d-]+.html/gm;
+    const RegexValidator = /https:\/\/geizhals.de\/[\w\d-]+.html/;
     const [url, setUrl] = useState("");
     const [isValid, setIsValid] = useState(true);
 
     function validateURL(inputUrl: string) {
-        const matches = inputUrl.match(RegexValidator);
-        const isValidUrl = matches !== null && matches !== undefined && matches.length !== 0
+        const isValidUrl = RegexValidator.test(inputUrl)
         setIsValid(isValidUrl);
         setUrl(inputUrl);
         if (isValid) {

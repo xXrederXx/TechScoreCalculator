@@ -1,7 +1,7 @@
 import { Page } from "puppeteer-core";
 import { getAvailableBrowser, releaseBrowser } from "./BrowserManager";
 
-const RegexValidator = /https:\/\/geizhals.de\/[\w\d-]+.html/gm;
+const RegexValidator = /https:\/\/geizhals.de\/[\w\d-]+.html/;
 
 export async function scrapeSpecs(url: string): Promise<{ [key: string]: string; }> {
     const ret = await RunScrape(scrapeSpecsIntern, url);
@@ -30,13 +30,16 @@ async function RunScrape<T>(func: (url: string, page: Page) => Promise<T>, url: 
 async function scrapeSpecsIntern(url: string, page: Page): Promise<{ [key: string]: string; }> {
     console.log("Start Scrape");
 
+    console.log("\t- Test URL with Regex")
     if (!RegexValidator.test(url)) {
+        console.log("End Price Scrape, Faulty URL");
         return { error: "Invalid URL. Must be from geizhals.de\n URL: " + url };
     }
 
-
+    console.log("\t- Load page url")
     await page.goto(url, { waitUntil: "networkidle2" });
 
+    console.log("\t- Evaluate (scraping)")
     const specs = await page.evaluate(() => {
         const specsObj: { [key: string]: string } = {};
 
@@ -60,14 +63,19 @@ async function scrapeSpecsIntern(url: string, page: Page): Promise<{ [key: strin
 async function scrapePriceIntern(url: string, page: Page): Promise<{ [key: string]: string }> {
     console.log("Start Price Scrape");
 
+    console.log("\t- Test url with RegEx")
     if (!RegexValidator.test(url)) {
+        console.log("End Price Scrape, Faulty URL");
         return { error: "Invalid URL. Must be from geizhals.de\n URL: " + url };
     }
 
+    console.log("\t- Loading page with url")
     await page.goto(url, { waitUntil: "networkidle2" });
 
+    console.log("\t- Waiting for Selector to load")
     await page.waitForSelector("span.variant__header__pricehistory__pricerange > strong > span.gh_price", { timeout: 5000 });
 
+    console.log("\t- Eavaluate (scraping)")
     const scraped = await page.evaluate(() => {
         const prices: number[] = [];
 
@@ -83,17 +91,19 @@ async function scrapePriceIntern(url: string, page: Page): Promise<{ [key: strin
         return prices;
     });
 
-    console.log("End Price Scrape");
 
+    console.log("\t- Checking Results")
     if (scraped.length < 2) {
         return {
             error: "Expected at least 2 prices.\n URL: " + url + "\n data: " + scraped.join(", "),
         };
     }
 
+    console.log("\t- Calculating Min/Max")
     const min = Math.min(...scraped);
     const max = Math.max(...scraped);
 
+    console.log("End Price Scrape");
     return {
         min: min.toFixed(2),
         max: max.toFixed(2),
