@@ -1,7 +1,7 @@
 import { NamedValue, Price, CPUCoolerSpecs } from "../Types";
 import { TryConvert } from "../Util/TryConvert";
 
-export function ConvertToCPUCooler(data: any, price: Price): CPUCoolerSpecs {
+export function ConvertToCPUCooler(data: any, price: Price): CPUCoolerSpecs {    
     return {
         Height: TryConvert((d) => new NamedValue<number>(parseHeight(d["Abmessungen mit Lüfter"].replace("mm", "")), d["Abmessungen mit Lüfter"]), data, new NamedValue<number>(0, "-")),
         TDP: TryConvert((d) => new NamedValue<number>(parseInt(d["TDP-Klassifizierung"].replace("W", "")), d["TDP-Klassifizierung"]), data, new NamedValue<number>(0, "-")),
@@ -13,9 +13,10 @@ export function ConvertToCPUCooler(data: any, price: Price): CPUCoolerSpecs {
 }
 
 function parseSocket(data: any): string[] {
-    const intel = data["Sockel Intel"]?.split(/,|\//).map((s:any) => s.trim()) || [];
-    const amd = data["Sockel AMD"]?.split(/,|\//).map((s:any) => s.trim()) || [];
-    const compat = data["Kompatibilität"]?.split(/,|\//).map((s:any) => s.trim()) || [];
+    const regex = /AM\d|\d{4}/gm
+    const intel = [...(data["Sockel Intel"]?.matchAll(regex) || [])].map(m => m[0]) || [];
+    const amd = [...(data["Sockel AMD"]?.matchAll(regex) || [])].map(m => m[0]) || [];
+    const compat = [...(data["Kompatibilität"]?.matchAll(regex) || [])].map(m => m[0]) || [];
 
     const all = [...intel, ...amd, ...compat];
     const unique = [...new Set(all)].filter(s => s.length > 0);

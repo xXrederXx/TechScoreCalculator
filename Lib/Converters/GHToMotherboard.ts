@@ -3,7 +3,7 @@ import { TryConvert } from "../Util/TryConvert";
 
 export function ConvertToMotherboard(data: any, price: Price): MotherboardSpecs {
     return {
-        Socket: TryConvert((d) => new NamedValue<string>(d["Sockel"], d["Sockel"]), data, new NamedValue<string>("", "-")),
+        Socket: TryConvert((d) => new NamedValue<string>(d["Sockel"]?.match(/AM\d|\d{4}/gm)[0], d["Sockel"]), data, new NamedValue<string>("", "-")),
         Chipset: TryConvert((d) => new NamedValue<string>(d["Chipsatz"], d["Chipsatz"]), data, new NamedValue<string>("", "-")),
         FormFactor: TryConvert((d) => new NamedValue<string>(d["Formfaktor"], d["Formfaktor"]), data, new NamedValue<string>("", "-")),
         MemorySlots: TryConvert((d) => new NamedValue<number>(parseInt(d["RAM-Slots"]), d["RAM-Slots"]), data, new NamedValue<number>(0, "-")),
