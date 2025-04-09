@@ -4,111 +4,150 @@ import { Text, View, StyleSheet } from 'react-native';
 import { getInterpolatedColorSlider } from "./ColorLERP";
 
 
-export function CheckForConflicts(data: PCSpecs): React.JSX.Element[] {
-    let conflicts: React.JSX.Element[] = [];
+type Severity = "info" | "warning" | "error";
 
-    // CPU ↔ Motherboard
-    conflicts.push(CheckYesNo(
+function RenderConflict({ severity, message }: { severity: Severity, message: string }): React.JSX.Element {
+    let emoji = severity === "error" ? "❌" : severity === "warning" ? "⚠️" : "ℹ️";
+    let color = severity === "error" ? "red" : severity === "warning" ? "orange" : "gray";
+
+    return (
+        <Text style={[PreStyle.text, { padding: theme.spacing.sm, color }]}>{`${emoji} ${message}`}</Text>
+    );
+}
+
+export function CheckForConflicts(data: PCSpecs): React.JSX.Element[] {
+    const conflicts: React.JSX.Element[] = [];
+
+    // Basic checks
+    conflicts.push(RenderConflict(CheckYesNo(
         data.CPU.Socket.value === data.Motherboard.Socket.value,
         "CPU and Motherboard Socket Matches",
-        `CPU Socket (${data.CPU.Socket.UserVersion}) doesn't match Motherboard Socket (${data.Motherboard.Socket.UserVersion})`
-    ));
-
-    // RAM ↔ Motherboard
-    conflicts.push(CheckYesNo(
+        `CPU Socket (${data.CPU.Socket.UserVersion}) doesn't match Motherboard Socket (${data.Motherboard.Socket.UserVersion})`,
+        "error"
+    )));
+    conflicts.push(RenderConflict(CheckYesNo(
         data.Motherboard.SupportedMemoryTypes.value.includes(data.RAM.DDRVersion.value),
         "Motherboard supports selected RAM DDR Version",
-        `Motherboard doesn't support RAM DDR Version (${data.RAM.DDRVersion.UserVersion})`
-    ));
-
-    // RAM ↔ CPU
-    conflicts.push(CheckYesNo(
+        `Motherboard doesn't support RAM DDR Version (${data.RAM.DDRVersion.UserVersion})`,
+        "error"
+    )));
+    conflicts.push(RenderConflict(CheckYesNo(
         data.CPU.DDRVersions.value.includes(data.RAM.DDRVersion.value),
         "CPU supports selected RAM DDR Version",
-        `CPU doesn't support RAM DDR Version (${data.RAM.DDRVersion.UserVersion})`
-    ));
-
-    // CPU Cooler ↔ Motherboard
-    conflicts.push(CheckYesNo(
+        `CPU doesn't support RAM DDR Version (${data.RAM.DDRVersion.UserVersion})`,
+        "error"
+    )));
+    conflicts.push(RenderConflict(CheckYesNo(
         data.CPUCooler.SocketCompatibility.value.includes(data.Motherboard.Socket.value),
         "Cooler supports motherboard socket",
-        `Cooler incompatible with motherboard socket.\n\t- Cooler: ${data.CPUCooler.SocketCompatibility.UserVersion}\n\t- Motherboard: ${data.Motherboard.Socket.UserVersion}`
-    ));
-
-    // CPU Cooler ↔ Case
-    conflicts.push(CheckYesNo(
+        `Cooler incompatible with motherboard socket.\n\t- Cooler: ${data.CPUCooler.SocketCompatibility.UserVersion}\n\t- Motherboard: ${data.Motherboard.Socket.UserVersion}`,
+        "error"
+    )));
+    conflicts.push(RenderConflict(CheckYesNo(
         data.CPUCooler.Height.value <= data.Case.MaxCPUCoolerHeight.value,
         "Cooler fits in the case",
-        `Cooler too tall for the case.\n\t- Cooler Height: ${data.CPUCooler.Height.UserVersion}\n\t- Max Allowed: ${data.Case.MaxCPUCoolerHeight.UserVersion}`
-    ));
-
-    // GPU ↔ Case
-    conflicts.push(CheckYesNo(
+        `Cooler too tall for the case.`,
+        "error"
+    )));
+    conflicts.push(RenderConflict(CheckYesNo(
         data.GPU.Size.value[0] <= data.Case.MaxGPULength.value,
         "GPU fits in the case",
-        `GPU is too long for the case.\n\t- GPU Length: ${data.GPU.Size.UserVersion}\n\t- Max Allowed: ${data.Case.MaxGPULength.UserVersion}`
-    ));
+        `GPU is too long for the case.`,
+        "error"
+    )));
 
-    // Motherboard Form Factor ↔ Case
-    conflicts.push(StringToTextElement(CheckMotherboardSize(
+    // Motherboard size
+    conflicts.push(RenderConflict(CheckMotherboardSize(
         data.Motherboard.FormFactor.value,
         data.Case.MaxFormFactorSupport.value
     )));
 
-    // CPU TDP ↔ Cooler TDP
+    // CPU Cooler TDP
     conflicts.push(CheckPercentage(data.CPU.TDP.value, data.CPUCooler.TDP.value, "CPU Cooler Load"));
 
-    // PSU Wattage ↔ Combined TDP
-    const estimatedPowerDraw = data.CPU.TDP.value + data.GPU.TDP.value + 100; // estimate 100W for board + drives
-    conflicts.push(CheckYesNo(
+    // PSU Power
+    const estimatedPowerDraw = data.CPU.TDP.value + data.GPU.TDP.value + 100;
+    conflicts.push(RenderConflict(CheckYesNo(
         data.PSU.Wattage.value >= estimatedPowerDraw,
         "PSU can handle power requirements",
-        `PSU may be underpowered.\n\t- PSU Wattage: ${data.PSU.Wattage.UserVersion}\n\t- Estimated Need: ~${estimatedPowerDraw}W`
-    ));
+        `PSU may be underpowered. Estimated need: ~${estimatedPowerDraw}W`,
+        "error"
+    )));
 
-    // RAM Slot Limit
-    conflicts.push(CheckYesNo(
-        2 <= data.Motherboard.MemorySlots.value, // Assume 2 stick for now
-        "Motherboard has at least 2 RAM slots",
-        `Motherboard has too few RAM slots.\n\t- Required: 2\n\t- Available: ${data.Motherboard.MemorySlots.UserVersion}`
-    ));
+    // PSU Form Factor
+    const caseSupportsATXPSU = data.Case.MaxFormFactorSupport.value.includes("ATX");
+    conflicts.push(RenderConflict(CheckYesNo(
+        caseSupportsATXPSU || data.PSU.FormFactor.value === "SFX",
+        "PSU form factor likely fits",
+        `Case may not support PSU form factor: ${data.PSU.FormFactor.UserVersion}`,
+        "warning"
+    )));
 
-    // Integrated Graphics availability if no GPU
+    // RAM slots
+    conflicts.push(RenderConflict(CheckYesNo(
+        data.Motherboard.MemorySlots.value >= 1,
+        "Motherboard has enough RAM slots",
+        `Motherboard RAM slots too few: ${data.Motherboard.MemorySlots.UserVersion}`,
+        "error"
+    )));
+
+    // Integrated GPU
     if (data.GPU.TDP.value === 0) {
-        conflicts.push(CheckYesNo(
+        conflicts.push(RenderConflict(CheckYesNo(
             data.CPU.HasIntegratedGraphic.value,
             "CPU has integrated graphics",
-            "No GPU selected and CPU lacks integrated graphics"
-        ));
+            "No GPU selected and CPU lacks integrated graphics",
+            "error"
+        )));
     }
 
-    // Optional: Cooler Type ↔ Case Support (e.g., radiator check)
-    if (data.CPUCooler.Type.value === "Liquid" && data.CPUCooler.RadiatorSize.value) {
-        // Simulate case support check here if you have radiator support data
-        // Otherwise just notify
-        conflicts.push(StringToTextElement(
-            `ℹ️ Liquid cooler with ${data.CPUCooler.RadiatorSize.value} radiator — check case compatibility manually.`
-        ));
+    // SSD speed checks
+    if (data.SSD.ReadSpeed.value < 300 || data.SSD.WriteSpeed.value < 300) {
+        conflicts.push(RenderConflict({
+            severity: "warning",
+            message: `SSD read/write speeds are low — consider upgrading.\n\t- Read: ${data.SSD.ReadSpeed.UserVersion}\n\t- Write: ${data.SSD.WriteSpeed.UserVersion}`
+        }));
     }
 
-    // Optional: Bluetooth/WiFi support on motherboard
-    if (!data.Motherboard.WIFISupport.value) {
-        conflicts.push(StringToTextElement("ℹ️ Motherboard lacks Wi-Fi — consider adding a Wi-Fi card or using Ethernet."));
+    // RAM latency
+    if (data.RAM.CL.value > 30) {
+        conflicts.push(RenderConflict({
+            severity: "warning",
+            message: `Unusually high RAM CAS Latency (CL): ${data.RAM.CL.UserVersion}`
+        }));
     }
-    if (!data.Motherboard.BluetoothSupport.value) {
-        conflicts.push(StringToTextElement("ℹ️ Motherboard lacks Bluetooth — consider a USB Bluetooth dongle."));
+
+    // High GPU power
+    if (data.GPU.TDP.value > 300) {
+        conflicts.push(RenderConflict({
+            severity: "warning",
+            message: `High GPU power draw (${data.GPU.TDP.UserVersion}) — ensure PSU & airflow are adequate.`
+        }));
+    }
+
+    // Total price range check
+    if (data.Price.value.avg > 4000) {
+        conflicts.push(RenderConflict({
+            severity: "info",
+            message: `Build price seems very high — is this intentional? $${data.Price.value.avg}`
+        }));
+    } else if (data.Price.value.avg < 500) {
+        conflicts.push(RenderConflict({
+            severity: "warning",
+            message: `Build cost is very low — some parts might be missing or budget-tier.`
+        }));
     }
 
     return conflicts;
 }
 
+function CheckYesNo(condition: boolean, yesText: string, noText: string, severity: Severity): { message: string, severity: Severity } {
+    return {
+        message: condition ? yesText : noText,
+        severity: condition ? "info" : severity
+    }
+}
 
-function StringToTextElement(str: string): React.JSX.Element {
-    return (<Text style={[PreStyle.text, { padding: theme.spacing.sm }]}>{str}</Text>)
-}
-function CheckYesNo(condition: boolean, yesText: string, noText: string): React.JSX.Element {
-    return StringToTextElement(condition ? "✅ " + yesText : "❌ " + noText)
-}
 function CheckPercentage(value: number, max: number, text: string): React.JSX.Element {
     const percent = 100 / max * value || 0
 
@@ -126,19 +165,23 @@ function CheckPercentage(value: number, max: number, text: string): React.JSX.El
         </View>
     )
 }
-function CheckMotherboardSize(motherboard: string, caseSize: string) {
+function CheckMotherboardSize(motherboard: string, caseSize: string): { severity: Severity, message: string } {
     const eatxRegex = /E-ATX/g // 304.8x276.9mm
     if (eatxRegex.test(motherboard) && eatxRegex.test(caseSize)) {
-        return "✅ Motherboard and case are same size (E-ATX)"
+        return { message: `Motherboard and case are same size (E-ATX) (${motherboard})`, severity: "info" }
     }
     const atxRegex = /ATX/g
     if (atxRegex.test(motherboard) && atxRegex.test(caseSize)) {
-        return "✅ Motherboard and case are same size (ATX)"
+        return { message: `Motherboard and case are same size (ATX) (${motherboard})`, severity: "info" }
     }
     const matxRegex = /µATX/g
     if (matxRegex.test(motherboard) && matxRegex.test(caseSize)) {
-        return "✅ Motherboard and case are same size (µATX)"
+        return { message: `Motherboard and case are same size (µATX) (${motherboard})`, severity: "info" }
     }
-    return `❓ Not the same but could fit. Check your self.\n\t\t- Motherboard: ${motherboard}\n\t\t- Case: ${caseSize}`
+    return {
+        message: `Motherboard and case might not match — double-check form factors.\n\t- Mobo: ${motherboard}\n\t- Case: ${caseSize}`,
+        severity: "warning"
+    }
+
 }
 
