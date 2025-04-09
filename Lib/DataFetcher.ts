@@ -13,8 +13,6 @@ export async function fetchDataGeizhals(url: string) {
 export async function fetchPriceGeizhals(url: string) : Promise<Price> {
     try {
         const response = await axios.get(`http://localhost:3001/scrapeGHPrice?url=${encodeURIComponent(url)}`);
-        console.log(response);
-        
         return new Price(parseFloat(response.data.min), parseFloat(response.data.max));
     } catch (error: any) {
         console.error('Error:', error.message);
