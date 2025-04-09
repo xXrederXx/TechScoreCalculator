@@ -68,6 +68,12 @@ export function CheckForConflicts(data: PCSpecs): React.JSX.Element[] {
         `GPU is too long for the case.`,
         "error"
     ));
+    rawConflicts.push(CheckYesNo(
+        data.PSU.Modular.value,
+        "PSU is modular",
+        `PSU is not modular. Consider using a modular one if possible`,
+        "warning"
+    ));
 
     // Motherboard size
     rawConflicts.push(CheckMotherboardSize(
