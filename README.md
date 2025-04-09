@@ -35,6 +35,7 @@ Tech Score Calculator is an intuitive tool designed to help users evaluate and c
   - Price Range (Low, Mid, High)
 - **Calculate Scores**: It can calculate scores based on the properties of the Component.
 - **Pc Check**: Checks if there are conflicts between components.
+- **And more...**
 ## How to Use
 
 1. Install dependencies
